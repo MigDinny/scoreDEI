@@ -29,6 +29,11 @@ public class DataController {
         return "redirect:/home";
     }
 
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
     //TUDO VAI SER REESCRITO
     /*
     @GetMapping("/createData")

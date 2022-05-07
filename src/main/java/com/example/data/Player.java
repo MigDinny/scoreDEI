@@ -54,10 +54,6 @@ public class Player {
         return this.name + " (id = " + this.id + "). Office: " + this.position;
     }
 
-    public List<Team> getStudents() {
-        return this.st;
-    }
-
     public int getAmountGoals(){
         return amount_goals;
     }
