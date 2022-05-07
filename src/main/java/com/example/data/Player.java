@@ -2,11 +2,7 @@ package com.example.data;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 
 
@@ -19,8 +15,6 @@ public class Player {
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
     @ManyToOne
     private Team team;
-
-    private List<Team> st;
 
     public Player() {}
 
