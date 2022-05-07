@@ -19,11 +19,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DataController {
     @Autowired
-    PlayerService profService;
+    PlayerService playerService;
 
     @Autowired
-    TeamService studentService;
+    TeamService teamService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    GameService gameService;
+
+    @Autowired
+    EventService eventService;
+    
     @GetMapping("/")
     public String redirect() {
         return "redirect:/home";

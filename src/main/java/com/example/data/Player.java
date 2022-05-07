@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name = "playerTable")
 public class Player {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -52,10 +53,6 @@ public class Player {
 
     public String toString() {
         return this.name + " (id = " + this.id + "). Office: " + this.position;
-    }
-
-    public List<Team> getStudents() {
-        return this.st;
     }
 
     public int getAmountGoals(){
