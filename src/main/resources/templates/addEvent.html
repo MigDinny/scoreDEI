@@ -1,0 +1,13 @@
+<form th:action="@{/sumbitNewEvent}" th:object="${event}" method="post">
+    <p th:text="New event to add">New</p>
+    <div="form-row">
+        <div>
+            <input type="hidden" th:field="*{id}">
+        </div>
+        <div>
+            <label>Office</label>
+            <input type="text" th:field="*{office}">
+        </div>
+        <button type="submit">Change office</button>
+    </div>
+</form>

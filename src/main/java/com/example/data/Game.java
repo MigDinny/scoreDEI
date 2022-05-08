@@ -3,18 +3,12 @@ package com.example.data;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Game {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int idTeam1;
-    private int idTeam2;
     private int scoreTeam1;
     private int scoreTeam2;
     private int idWinner;
@@ -27,12 +21,14 @@ public class Game {
     @OneToMany(mappedBy="game")
     private List<Event> events;
 
+    @ManyToMany(mappedBy="games")
+    private List<Team> teams;
+
     public Game() {
     }
 
     public Game(int idTeam1, int idTeam2, String localization) {
-        this.idTeam1 = idTeam1;
-        this.idTeam2 = idTeam2;
+
         this.scoreTeam1 = 0;
         this.scoreTeam2 = 0;
         this.localization = localization;
@@ -59,21 +55,6 @@ public class Game {
         this.events.add(event);
     }
 
-    public int getIdTeam1() {
-        return idTeam1;
-    }
-
-    public void setIdTeam1(int idTeam1){
-        this.idTeam1 = idTeam1;
-    }
-
-    public int getIdTeam2(){
-        return idTeam2;
-    }
-
-    public void setIdTeam2(int idTeam2){
-        this.idTeam2 = idTeam2;
-    }
 
     public String getLocalization(){
         return localization;

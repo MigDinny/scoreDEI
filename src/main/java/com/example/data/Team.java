@@ -16,6 +16,9 @@ public class Team {
     @OneToMany(mappedBy="team")
     private List<Player> players;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Game> games;
+
     public Team() {
     }
 

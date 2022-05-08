@@ -1,19 +1,22 @@
 package com.example.demo;
 
 //import java.util.List;
-//import java.util.Optional;
+import java.util.Optional;
 
 //import com.example.data.Player;
 //import com.example.data.Team;
-//import com.example.formdata.FormData;
+import com.example.data.Event;
+import com.example.data.Game;
+import com.example.formdata.FormData;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 //import org.springframework.web.bind.annotation.ModelAttribute;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -42,6 +45,66 @@ public class DataController {
     public String home() {
         return "home";
     }
+
+
+    //View of all the games
+    @GetMapping("/viewGames")
+    public String viewGames(Model m){
+        m.addAttribute("games", this.gameService.getAllGames());
+        return "currentGames";
+    }
+
+    @GetMapping("/viewEvents")
+    public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("events", ga.get().getEvents());
+            return "viewEvents";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("/addEvent")
+    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("game", id);
+            return "addEvent";
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/submitNewEvent")
+    public String newEvent(@ModelAttribute Event event) {
+        this.eventService.addEvent(event);
+        return "redirect:/home";
+    }
+
+
+    //@PostMapping("/sumbitOfficeChange")
+    //public String changeOffice(@ModelAttribute Professor prof) {
+    //    this.profService.changeProfOffice(prof.getId(), prof.getOffice());
+    //    return "redirect:/listProfessors";
+    //}
+    //private String getEditProfessorForm(int id, String formName, Model m) {
+    //    Optional<Professor> op = this.profService.getProfessor(id);
+    //    if (op.isPresent()) {
+    //        m.addAttribute("professor", op.get());
+    //        return formName;
+    //    }
+    //    return "redirect:/listProfessors";
+    //}
+
+    //@GetMapping("/editProfessor")
+    //public String editProfessor(@RequestParam(name="id", required=true) int id, Model m) {
+    //    return getEditProfessorForm(id, "editProfessor", m);
+    //}    
+
+    // For the sake of illustrating the use of @Transactional 
+    //@GetMapping("/changeOffice")
+    //public String getOfficeForm(@RequestParam(name="id", required=true) int id, Model m) {
+    //    return getEditProfessorForm(id, "editProfessorOffice", m);
+    //}
 
     //TUDO VAI SER REESCRITO
     /*
@@ -142,19 +205,9 @@ public class DataController {
         return "editProfessor";
     }
 
-    private String getEditProfessorForm(int id, String formName, Model m) {
-        Optional<Professor> op = this.profService.getProfessor(id);
-        if (op.isPresent()) {
-            m.addAttribute("professor", op.get());
-            return formName;
-        }
-        return "redirect:/listProfessors";
-    }
+    
 
-    @GetMapping("/editProfessor")
-    public String editProfessor(@RequestParam(name="id", required=true) int id, Model m) {
-        return getEditProfessorForm(id, "editProfessor", m);
-    }    
+    
 
     @PostMapping("/saveProfessor")
     public String saveProfessor(@ModelAttribute Professor prof) {
@@ -162,16 +215,8 @@ public class DataController {
         return "redirect:/listProfessors";
     }
 
-    // For the sake of illustrating the use of @Transactional 
-    @GetMapping("/changeOffice")
-    public String getOfficeForm(@RequestParam(name="id", required=true) int id, Model m) {
-        return getEditProfessorForm(id, "editProfessorOffice", m);
-    }
+    
 
-    @PostMapping("/sumbitOfficeChange")
-    public String changeOffice(@ModelAttribute Professor prof) {
-        this.profService.changeProfOffice(prof.getId(), prof.getOffice());
-        return "redirect:/listProfessors";
-    }*/
+    */
 
 }
