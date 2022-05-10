@@ -4,6 +4,7 @@ package com.example.data;
 import java.util.List;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 public class Game {
@@ -33,6 +34,8 @@ public class Game {
         this.scoreTeam2 = 0;
         this.localization = localization;
         this.interrupted = false;
+        this.teams = new ArrayList<>();
+        this.events = new ArrayList<>();
     }
 
     public int getId() {
