@@ -43,6 +43,85 @@ public class DataController {
         return "home";
     }
 
+    @GetMapping("/users")
+    public String users() {
+        return "users";
+    }
+
+    @GetMapping("/teams")
+    public String teams() {
+        return "teams";
+    }
+
+    @GetMapping("/players")
+    public String players() {
+        return "players";
+    }
+
+    /*@GetMapping("/matches")
+    public String matches() {
+        return "matches";
+    }*/
+
+    //View of all the games
+    @GetMapping("/viewGames")
+    public String viewGames(Model m){
+        m.addAttribute("games", this.gameService.getAllGames());
+        return "currentGames";
+    }
+
+    @GetMapping("/viewEvents")
+    public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("events", ga.get().getEvents());
+            return "viewEvents";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("/addEvent")
+    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("game", id);
+            return "addEvent";
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/submitNewEvent")
+    public String newEvent(@ModelAttribute Event event) {
+        this.eventService.addEvent(event);
+        return "redirect:/home";
+    }
+
+
+    //@PostMapping("/sumbitOfficeChange")
+    //public String changeOffice(@ModelAttribute Professor prof) {
+    //    this.profService.changeProfOffice(prof.getId(), prof.getOffice());
+    //    return "redirect:/listProfessors";
+    //}
+    //private String getEditProfessorForm(int id, String formName, Model m) {
+    //    Optional<Professor> op = this.profService.getProfessor(id);
+    //    if (op.isPresent()) {
+    //        m.addAttribute("professor", op.get());
+    //        return formName;
+    //    }
+    //    return "redirect:/listProfessors";
+    //}
+
+    //@GetMapping("/editProfessor")
+    //public String editProfessor(@RequestParam(name="id", required=true) int id, Model m) {
+    //    return getEditProfessorForm(id, "editProfessor", m);
+    //}    
+
+    // For the sake of illustrating the use of @Transactional 
+    //@GetMapping("/changeOffice")
+    //public String getOfficeForm(@RequestParam(name="id", required=true) int id, Model m) {
+    //    return getEditProfessorForm(id, "editProfessorOffice", m);
+    //}
+
     //TUDO VAI SER REESCRITO
     /*
     @GetMapping("/createData")

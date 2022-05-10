@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scoreDEI - Home</title>
+</head>
+<body>
+    <table border="2">
+        <tr>
+            <th>Username</th>
+            <th>Is Admin</th>
+        </tr>
+        <tr th:each="u : ${users}">
+            <td th:text ="${u.name}"></td>
+            <td th:if="${u.is_admin == true}">Admin</td>
+            <td th:unless="${u.is_admin == true}">Regular</td>
+        </tr>
+    </table>
+</body>
+</html>
