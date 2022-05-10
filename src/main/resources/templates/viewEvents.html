@@ -7,14 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <a th:href="@{addEvent(id=${events.game.id})}">Add Event</a>
+    <a th:href="@{addEvent(id=${id})}">Add Event</a>
     <table border="2">
         <tr>
             <th>Event</th>
         </tr>
         <tr th:each="e : ${events}">
             <td th:text ="${e.description}"></td>
-
         </tr>
     </table>
 </body>

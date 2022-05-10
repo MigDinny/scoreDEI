@@ -9,6 +9,7 @@ import com.example.data.Event;
 import com.example.data.Game;
 import com.example.formdata.FormData;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +44,14 @@ public class DataController {
 
     @GetMapping("/home")
     public String home() {
+        System.out.println("HUI");
         return "home";
+    }
+    
+    @GetMapping("/add")
+    public String add(Model m){
+        m.addAttribute("id", 1);
+        return "addEvent";
     }
 
 
@@ -59,6 +67,7 @@ public class DataController {
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
             m.addAttribute("events", ga.get().getEvents());
+            m.addAttribute("id", id);
             return "viewEvents";
         }
         return "redirect:/viewGames";
@@ -68,18 +77,102 @@ public class DataController {
     public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            m.addAttribute("game", id);
+            m.addAttribute("id", id);
             return "addEvent";
+        }
+        return "redirect:/home";
+    }
+    
+    @GetMapping("/startGame")
+    public String startGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+
+            Game game = ga.get();
+            game.setOngoing(true);
+            
+            Event event = new Event("Game started");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/endGame")
+    public String endGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+
+            Game game = ga.get();
+            game.setOngoing(false);
+
+
+            Event event = new Event("Game ended");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/newGoal")
+    public String newGoal(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("g",id);
+            return "addGoal";
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/newYellow")
+    public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("g",id);
+            return "addYellow";
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/newRed")
+    public String newRed(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("g",id);
+            return "addRed";
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/interruptGame")
+    public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            Game game = ga.get();
+            game.setInterrupted(true);
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/resumeGame")
+    public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            Game game = ga.get();
+            game.setInterrupted(false);
         }
         return "redirect:/home";
     }
 
     @PostMapping("/submitNewEvent")
     public String newEvent(@ModelAttribute Event event) {
-        this.eventService.addEvent(event);
+        
         return "redirect:/home";
     }
 
+    
 
     //@PostMapping("/sumbitOfficeChange")
     //public String changeOffice(@ModelAttribute Professor prof) {

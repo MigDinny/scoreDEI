@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Blob;
+import javax.sql.rowset.serial.SerialBlob;
 
 @Entity
 public class Game {
@@ -17,6 +20,9 @@ public class Game {
     private String localization;
     private boolean interrupted;
     private boolean is_draw;
+    private boolean ongoing;
+    private Date date;
+    private Blob blob;
     //FALTA O CAMPO DA IMAGEM (BLOB)
 
     @OneToMany(mappedBy="game")
@@ -34,6 +40,7 @@ public class Game {
         this.scoreTeam2 = 0;
         this.localization = localization;
         this.interrupted = false;
+        this.ongoing = false;
         this.teams = new ArrayList<>();
         this.events = new ArrayList<>();
     }
@@ -149,6 +156,30 @@ public class Game {
      */
     public void setIs_draw(boolean is_draw) {
         this.is_draw = is_draw;
+    }
+
+    public void setDate(Date date){
+        this.date = date;
+    }
+
+    public Date getDate(){
+        return date;
+    }
+
+    public void setBlob(Blob blob){
+        this.blob = blob;
+    }
+
+    public Blob getBlob(){
+        return blob;
+    }
+
+    public void setOngoing(boolean ongoing){
+        this.ongoing = ongoing;
+    }
+    
+    public boolean getOngoing(){
+        return ongoing;
     }
 
 }
