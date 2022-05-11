@@ -86,6 +86,7 @@ public class DataController {
         games.add(game2);
         m.addAttribute("games", games);*/
         Game game = new Game("Coimbra");
+        game.setDate(new Date());
 
         Player player = new Player("Edgar", "striker");
         Team team1 = new Team("sporting");
@@ -94,11 +95,16 @@ public class DataController {
         team1.addGame(game);
         team2.addGame(game);
 
+        game.addTeams(team1);
+        game.addTeams(team2);
+
+        this.gameService.addGame(game);
         this.teamService.addTeam(team1);
         this.teamService.addTeam(team2);
         this.playerService.addPlayer((player));
 
-        EventData event_d = new EventData(game, "Yellow Card",1);
+        EventData event_d = new EventData(game.getId(), "Yellow Card",1);
+        System.out.println(event_d.getType());
         m.addAttribute("event", event_d);
         m.addAttribute("players", this.playerService.getAllPlayers());
         return "addYellow";
@@ -117,6 +123,8 @@ public class DataController {
     public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
+            System.out.println("yo");
+            System.out.println(ga.get().getEvents().size());
             m.addAttribute("events", ga.get().getEvents());
             m.addAttribute("id", id);
             return "viewEvents";
@@ -138,7 +146,7 @@ public class DataController {
     public String startGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-
+            System.out.println("werwefwefwefwef");
             Game game = ga.get();
             game.setOngoing(true);
             
@@ -180,7 +188,7 @@ public class DataController {
     public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            EventData event_d = new EventData(ga.get(), "Yellow Card",1);
+            EventData event_d = new EventData(ga.get().getId(), "Yellow Card",1);
             m.addAttribute("event", event_d);
             m.addAttribute("players", this.playerService.getAllPlayers());
             return "addYellow";
@@ -190,22 +198,33 @@ public class DataController {
 
     @GetMapping("/submitYellow")
     public String submitYellow(@ModelAttribute EventData event){
+
         if(event.getType() == 1){
+
             Event newEvent = new Event(event.getDescription());
-            newEvent.setGame(event.getGame());
+ 
+            Optional<Game> ga = this.gameService.getGame(event.getGameId());
+            if(ga.isPresent()){
 
-            Player player = event.getPlayer();
-            player.setAmountYellows(player.getAmountYellows() +1);
+                Game game = ga.get();
+                newEvent.setGame(game);
+                newEvent.setDate(event.getDate());
+                this.eventService.addEvent(newEvent);
+                Player player = event.getPlayer();
+                player.setAmountYellows(player.getAmountYellows() +1);
 
-            Game game = event.getGame();
-            game.addEvent(newEvent);
-
-            this.eventService.addEvent(newEvent);
+                game.addEvent(newEvent);
+      
+                
+;
+            }
+            
 
         }
         else if(event.getType() == 2){
-
+            System.out.println("HERE2");
         }
+        System.out.println("HERE3");
         return "redirect:/home";
 
     }

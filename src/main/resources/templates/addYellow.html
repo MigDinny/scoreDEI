@@ -2,7 +2,9 @@
 
     <div>
         <label>Description</label>
-        <input type="text" th:field="*{description}">
+        <input type="hidden" th:field="*{type}">
+        <input type="hidden" th:field="*{description}">
+        <input type="hidden" th:field="*{gameId}">
 
         <label>Player</label>
         <select id="players" th:field="*{player}">

@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class EventData {
     private String description;
-    private Game game;
+    private int gameId;
     //1-Yellow card/Red card, 2-Goal
     private int type;
     private Player player;
@@ -18,9 +18,10 @@ public class EventData {
     public EventData() {
     }
 
-    public EventData(Game game, String description, int type){
-        this.game = game;
+    public EventData(int gameId, String description, int type){
+        this.gameId = gameId;
         this.description = description;
+        this.type = type;
 
     }
 
@@ -32,12 +33,12 @@ public class EventData {
         this.description = description;
     }
 
-    public Game getGame(){
-        return game;
+    public int getGameId(){
+        return gameId;
     }
 
-    public void setGame(Game game){
-        this.game = game;
+    public void setGame(int gameId){
+        this.gameId = gameId;
     }
 
     public int getType(){
