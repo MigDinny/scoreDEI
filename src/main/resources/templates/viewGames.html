@@ -25,7 +25,7 @@
                 <span th:text="${g.scoreTeam1}">scoreTeam1</span>-<span th:text="${g.scoreTeam2}">team2</span>
             </td>
             <td th:text="${g.localization}">id</td>
-            <td th:data="${g.data}">id</td>
+            <td th:text="${#dates.formatISO(g.date)}">id</td>
             <td><a th:href="@{viewEvents(id=${g.id})}">Game Events</a></td>
             </td>
         </tr>

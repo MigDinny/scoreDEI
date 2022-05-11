@@ -1,10 +1,13 @@
 package com.example.demo;
 
-//import java.util.List;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Date;
+
 
 //import com.example.data.Player;
-//import com.example.data.Team;
+import com.example.data.Team;
 import com.example.data.Event;
 import com.example.data.Game;
 import com.example.formdata.FormData;
@@ -44,14 +47,43 @@ public class DataController {
 
     @GetMapping("/home")
     public String home() {
-        System.out.println("HUI");
         return "home";
     }
     
-    @GetMapping("/add")
-    public String add(Model m){
+    //PARA TESTES APAGAR NO FINAL
+    @GetMapping("/test")
+    public String test(Model m){
+        /*
+        Event event = new Event("ola");
+        Event event2 = new Event("wqeq");
+        Game game = new Game(1,1, "Coimbra");
+
+        List<Event> events = new ArrayList<Event>();
+        events.add(event);
+        events.add(event2);
+        event.setGame(game);
+        m.addAttribute("events", events);
         m.addAttribute("id", 1);
-        return "addEvent";
+        Team team1 = new Team("sporting");
+        Team team2 = new Team("brah");
+        Team team3 = new Team("mirandense");
+
+        Game game = new Game(1,1, "Coimbra");
+        Game game2 = new Game(1,1, "Acores");
+
+        game.addTeams(team1);
+        game.addTeams(team2);
+
+        game2.addTeams(team2);
+        game2.addTeams(team3);
+
+        game.setDate(new Date());
+        game2.setDate(new Date());
+        List<Game> games = new ArrayList<Game>();
+        games.add(game);
+        games.add(game2);
+        m.addAttribute("games", games);*/
+        return "home";
     }
 
 
@@ -59,7 +91,7 @@ public class DataController {
     @GetMapping("/viewGames")
     public String viewGames(Model m){
         m.addAttribute("games", this.gameService.getAllGames());
-        return "currentGames";
+        return "viewGames";
     }
 
     @GetMapping("/viewEvents")
@@ -166,11 +198,6 @@ public class DataController {
         return "redirect:/home";
     }
 
-    @PostMapping("/submitNewEvent")
-    public String newEvent(@ModelAttribute Event event) {
-        
-        return "redirect:/home";
-    }
 
     
 

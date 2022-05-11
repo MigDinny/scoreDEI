@@ -60,10 +60,25 @@ public class Game {
     public void setEvents(List<Event> events) {
         this.events = events;
     }
-
+    
     public void addEvent(Event event) {
         this.events.add(event);
     }
+
+    public void addTeams(Team team) {
+        this.teams.add(team);
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+   
+
 
 
     public String getLocalization(){
