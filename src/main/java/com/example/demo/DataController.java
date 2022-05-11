@@ -11,6 +11,7 @@ import com.example.data.User;
 import com.example.data.Team;
 import com.example.data.Event;
 import com.example.data.Game;
+import com.example.data.Player;
 import com.example.formdata.FormData;
 
 
@@ -229,28 +230,46 @@ public class DataController {
     //    return getEditProfessorForm(id, "editProfessorOffice", m);
     //}
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public String users(Model m) {
-        m.addAttribute("us", this.userService.getAllUsers()); 
-        return "usersManager";
+        m.addAttribute("us", this.userService.getAllUsers());
+        m.addAttribute("user", new User());
+        return "users";
     }
 
-    @PostMapping("/users/signup")
+    @PostMapping("/admin/users/signup")
     public String usersSignup(@ModelAttribute("user") User user) {
-        user.setAdmin(true);
         this.userService.addUser(user);
 
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @GetMapping("/teams")
-    public String teams() {
+    @GetMapping("/admin/teams")
+    public String teams(Model m) { 
+        m.addAttribute("allTeams", this.teamService.getAllTeams());
+        m.addAttribute("team", new Team());
         return "teams";
+    } 
+
+    @PostMapping("/admin/teams/create")
+    public String teamsCreate(@ModelAttribute("team") Team team) {
+        this.teamService.addTeam(team);
+        return "redirect:/admin/teams";
     }
 
-    @GetMapping("/players")
-    public String players() {
+    @GetMapping("/admin/players")
+    public String players(Model m) {
+        m.addAttribute("allTeams", this.teamService.getAllTeams());
+        m.addAttribute("allPlayers", this.playerService.getAllPlayers());
+        m.addAttribute("player", new Player());
         return "players";
+    }
+
+    @PostMapping("/admin/players/create")
+    public String playersCreate(@ModelAttribute("player") Player player) {
+        this.playerService.addPlayer(player);
+
+        return "redirect:/admin/players";
     }
 
     @GetMapping("/matches")

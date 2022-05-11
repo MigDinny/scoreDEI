@@ -2,6 +2,8 @@ package com.example.data;
 
 
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 
@@ -13,11 +15,13 @@ public class Player {
     private int id;
     private String name, position;
     private int amount_goals, amount_yellows, amount_reds;
+    private Date birthdate;
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
     @ManyToOne
     private Team team;
 
     public Player() {}
+
 
     public Player(String name, String position) {
         this.name = name;
@@ -77,5 +81,21 @@ public class Player {
 
     public void setAmountReds(int amount_reds){
         this.amount_reds = amount_reds;
+    }
+    
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Team getTeam() {
+        return this.team;
     }
 }
