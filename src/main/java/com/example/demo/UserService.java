@@ -16,7 +16,7 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public List<User> getAllEvents()  
+    public List<User> getAllUsers()  
     {    
         List<User>userRecords = new ArrayList<>();    
         userRepository.findAll().forEach(userRecords::add);    
@@ -29,7 +29,7 @@ public class UserService {
         userRepository.save(user);    
     }
 
-    public Optional<User> getEvent(int id) {
+    public Optional<User> getUser(int id) {
         return userRepository.findById(id);
     }
 

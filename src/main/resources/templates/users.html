@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>scoreDEI - Home</title>
+    <title>scoreDEI - </title>
 </head>
 <body>
+    <span>HELLO</span>
+    <form th:action="@{/users/signup}" th:object="${user}" method="post">
+        <div="form-row">
+            <input type="text" th:field="*{name}" />
+            <input type="email" th:field="*{email}" />
+            <input type="text" th:field="*{phoneNumber}" />
+            <input type="password" th:field="*{password}" />            
+            <select th:field="*{is_admin}">
+                <option th:value="true">Admin</option>
+                <option th:value="false">Regular User</option>
+            </select>
+            <button type="submit">Registar Utilizador</button>
+        </div>
+    </form>
+
     <table border="2">
         <tr>
             <th>Username</th>

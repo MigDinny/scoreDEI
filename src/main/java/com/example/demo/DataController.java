@@ -3,9 +3,12 @@ package com.example.demo;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.data.Player;
-import com.example.data.Team;
-import com.example.formdata.FormData;
+//import com.example.data.Player;
+//import com.example.data.Team;
+import com.example.data.User;
+import com.example.data.Event;
+import com.example.data.Game;
+//import com.example.formdata.FormData;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 @Controller
 public class DataController {
@@ -41,6 +43,67 @@ public class DataController {
     @GetMapping("/home")
     public String home() {
         return "home";
+    }
+
+    @GetMapping("/users")
+    public String users(Model m) {
+        m.addAttribute("users", this.userService.getAllUsers()); 
+        return "users";
+    }
+
+    @PostMapping("/users/signup")
+    public String usersSignup(@ModelAttribute User user) {
+        this.userService.addUser(user);
+
+        return "redirect:/users";
+    }
+
+    @GetMapping("/teams")
+    public String teams() {
+        return "teams";
+    }
+
+    @GetMapping("/players")
+    public String players() {
+        return "players";
+    }
+
+    @GetMapping("/matches")
+    public String matches() {
+        return "matches";
+    }
+
+    //View of all the games
+    @GetMapping("/viewGames")
+    public String viewGames(Model m){
+        m.addAttribute("games", this.gameService.getAllGames());
+        return "currentGames";
+    }
+
+    @GetMapping("/viewEvents")
+    public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("events", ga.get().getEvents());
+            return "viewEvents";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("/addEvent")
+    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("game", id);
+            return "addEvent";
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/submitNewEvent")
+    public String newEvent(@ModelAttribute Event event) {
+        this.eventService.addEvent(event);
+        return "redirect:/home";
     }
 
     //TUDO VAI SER REESCRITO
