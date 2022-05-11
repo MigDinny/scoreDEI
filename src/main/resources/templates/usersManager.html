@@ -14,20 +14,17 @@
             <input type="email" th:field="*{email}" />
             <input type="text" th:field="*{phoneNumber}" />
             <input type="password" th:field="*{password}" />            
-            <select th:field="*{is_admin}">
-                <option th:value="true">Admin</option>
-                <option th:value="false">Regular User</option>
-            </select>
+            <input type="text" th:field="*{is_admin}" value="true" />
             <button type="submit">Registar Utilizador</button>
         </div>
-    </form>
+    </form>-->
 
     <table border="2">
         <tr>
             <th>Username</th>
             <th>Is Admin</th>
         </tr>
-        <tr th:each="u : ${users}">
+        <tr th:each="u : ${us}">
             <td th:text ="${u.name}"></td>
             <td th:if="${u.is_admin == true}">Admin</td>
             <td th:unless="${u.is_admin == true}">Regular</td>
