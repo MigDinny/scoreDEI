@@ -6,17 +6,26 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 
 @Entity
 @Table(name = "playerTable")
 public class Player {
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String name, position;
     private int amount_goals, amount_yellows, amount_reds;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
+    @JsonSerialize
     @ManyToOne
     private Team team;
 
