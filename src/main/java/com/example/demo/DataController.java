@@ -236,12 +236,9 @@ public class DataController {
     }
 
     @PostMapping("/users/signup")
-    public String usersSignup(Model m,
-        @ModelAttribute("user") @Validated User user, 
-        BindingResult result, 
-        final RedirectAttributes redirectAttributes) {
-        
-            //this.userService.addUser(user);
+    public String usersSignup(@ModelAttribute("user") User user) {
+        user.setAdmin(true);
+        this.userService.addUser(user);
 
         return "redirect:/users";
     }
