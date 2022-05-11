@@ -6,8 +6,6 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -25,10 +23,9 @@ public class Player {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
-    @JsonSerialize
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Team team;
-
+    
     public Player() {}
 
 
