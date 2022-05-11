@@ -272,9 +272,15 @@ public class DataController {
         return "redirect:/admin/players";
     }
 
-    @GetMapping("/matches")
+    @GetMapping("admin/matches")
     public String matches() {
         return "matches";
+    }
+
+    @PostMapping("/admin/matches/create")
+    public String matchesCreate() {
+        
+        return "redirect:/admin/matches";
     }
 
     @PostMapping("/submitNewEvent")
