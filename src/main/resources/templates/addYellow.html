@@ -1,0 +1,21 @@
+<form th:action="@{/submitYellow}" th:object="${event}" method="get">
+
+    <div>
+        <label>Description</label>
+        <input type="text" th:field="*{description}">
+
+        <label>Player</label>
+        <select id="players" th:field="*{player}">
+            <option th:each="player : ${players}"
+                    th:value="${{player}}"
+                    th:text="${player.name}">
+            </option>
+        </select>
+
+        <label>Date</label>
+        <input type="date" th:field="*{date}">
+
+    </div>
+    <button type="submit">Submit</button>
+
+</form>

@@ -10,7 +10,9 @@ import java.util.Date;
 import com.example.data.Team;
 import com.example.data.Event;
 import com.example.data.Game;
+import com.example.data.Player;
 import com.example.formdata.FormData;
+import com.example.formdata.EventData;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ public class DataController {
     }
     
     //PARA TESTES APAGAR NO FINAL
-    @GetMapping("/test")
+    @GetMapping("home/test")
     public String test(Model m){
         /*
         Event event = new Event("ola");
@@ -68,7 +70,7 @@ public class DataController {
         Team team2 = new Team("brah");
         Team team3 = new Team("mirandense");
 
-        Game game = new Game(1,1, "Coimbra");
+        
         Game game2 = new Game(1,1, "Acores");
 
         game.addTeams(team1);
@@ -83,7 +85,24 @@ public class DataController {
         games.add(game);
         games.add(game2);
         m.addAttribute("games", games);*/
-        return "home";
+        Game game = new Game("Coimbra");
+
+        Player player = new Player("Edgar", "striker");
+        Team team1 = new Team("sporting");
+        Team team2 = new Team("brah");
+
+        team1.addGame(game);
+        team2.addGame(game);
+
+        this.teamService.addTeam(team1);
+        this.teamService.addTeam(team2);
+        this.playerService.addPlayer((player));
+
+        EventData event_d = new EventData(game, "Yellow Card",1);
+        m.addAttribute("event", event_d);
+        m.addAttribute("players", this.playerService.getAllPlayers());
+        return "addYellow";
+
     }
 
 
@@ -139,7 +158,6 @@ public class DataController {
             Game game = ga.get();
             game.setOngoing(false);
 
-
             Event event = new Event("Game ended");
             game.addEvent(event);
 
@@ -162,10 +180,34 @@ public class DataController {
     public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            m.addAttribute("g",id);
+            EventData event_d = new EventData(ga.get(), "Yellow Card",1);
+            m.addAttribute("event", event_d);
+            m.addAttribute("players", this.playerService.getAllPlayers());
             return "addYellow";
         }
         return "redirect:/home";
+    }
+
+    @GetMapping("/submitYellow")
+    public String submitYellow(@ModelAttribute EventData event){
+        if(event.getType() == 1){
+            Event newEvent = new Event(event.getDescription());
+            newEvent.setGame(event.getGame());
+
+            Player player = event.getPlayer();
+            player.setAmountYellows(player.getAmountYellows() +1);
+
+            Game game = event.getGame();
+            game.addEvent(newEvent);
+
+            this.eventService.addEvent(newEvent);
+
+        }
+        else if(event.getType() == 2){
+
+        }
+        return "redirect:/home";
+
     }
 
     @GetMapping("/newRed")
@@ -198,9 +240,47 @@ public class DataController {
         return "redirect:/home";
     }
 
+    
+
+    /*
+    @GetMapping("/queryStudents")
+    public String queryStudent1(Model m) {
+        m.addAttribute("person", new FormData());
+        return "queryStudents";
+    }
+
+    // Note the invocation of a service method that is served by a query in jpql 
+
+    @GetMapping("/queryResults")
+    public String queryResult1(@ModelAttribute FormData data, Model m) {
+        List<Team> ls = this.studentService.findByNameEndsWith(data.getName());
+        m.addAttribute("students", ls);
+        return "listStudents";
+    }
+
+    @GetMapping("/listProfessors")
+    public String listProfs(Model model) {
+        model.addAttribute("professors", this.profService.getAllProfessors());
+        return "listProfessors";
+    }
+
+    @GetMapping("/createProfessor")
+    public String createProfessor(Model m) {
+        m.addAttribute("professor", new Professor());
+        return "editProfessor";
+    }
 
     
 
+    
+
+    @PostMapping("/saveProfessor")
+    public String saveProfessor(@ModelAttribute Professor prof) {
+        this.profService.addProfessor(prof);
+        return "redirect:/listProfessors";
+    }
+    
+    */
     //@PostMapping("/sumbitOfficeChange")
     //public String changeOffice(@ModelAttribute Professor prof) {
     //    this.profService.changeProfOffice(prof.getId(), prof.getOffice());
@@ -298,42 +378,7 @@ public class DataController {
         return "redirect:/listStudents";
     }
 
-    @GetMapping("/queryStudents")
-    public String queryStudent1(Model m) {
-        m.addAttribute("person", new FormData());
-        return "queryStudents";
-    }
-
-    // Note the invocation of a service method that is served by a query in jpql 
-
-    @GetMapping("/queryResults")
-    public String queryResult1(@ModelAttribute FormData data, Model m) {
-        List<Team> ls = this.studentService.findByNameEndsWith(data.getName());
-        m.addAttribute("students", ls);
-        return "listStudents";
-    }
-
-    @GetMapping("/listProfessors")
-    public String listProfs(Model model) {
-        model.addAttribute("professors", this.profService.getAllProfessors());
-        return "listProfessors";
-    }
-
-    @GetMapping("/createProfessor")
-    public String createProfessor(Model m) {
-        m.addAttribute("professor", new Professor());
-        return "editProfessor";
-    }
-
-    
-
-    
-
-    @PostMapping("/saveProfessor")
-    public String saveProfessor(@ModelAttribute Professor prof) {
-        this.profService.addProfessor(prof);
-        return "redirect:/listProfessors";
-    }
+   
 
     
 
