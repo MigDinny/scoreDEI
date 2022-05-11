@@ -1,14 +1,17 @@
 package com.example.demo;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Date;
+
 
 //import com.example.data.Player;
-//import com.example.data.Team;
-import com.example.data.User;
+import com.example.data.Team;
 import com.example.data.Event;
 import com.example.data.Game;
-//import com.example.formdata.FormData;
+import com.example.formdata.FormData;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class DataController {
@@ -44,6 +48,182 @@ public class DataController {
     public String home() {
         return "home";
     }
+    
+    //PARA TESTES APAGAR NO FINAL
+    @GetMapping("/test")
+    public String test(Model m){
+        /*
+        Event event = new Event("ola");
+        Event event2 = new Event("wqeq");
+        Game game = new Game(1,1, "Coimbra");
+
+        List<Event> events = new ArrayList<Event>();
+        events.add(event);
+        events.add(event2);
+        event.setGame(game);
+        m.addAttribute("events", events);
+        m.addAttribute("id", 1);
+        Team team1 = new Team("sporting");
+        Team team2 = new Team("brah");
+        Team team3 = new Team("mirandense");
+
+        Game game = new Game(1,1, "Coimbra");
+        Game game2 = new Game(1,1, "Acores");
+
+        game.addTeams(team1);
+        game.addTeams(team2);
+
+        game2.addTeams(team2);
+        game2.addTeams(team3);
+
+        game.setDate(new Date());
+        game2.setDate(new Date());
+        List<Game> games = new ArrayList<Game>();
+        games.add(game);
+        games.add(game2);
+        m.addAttribute("games", games);*/
+        return "home";
+    }
+
+
+    //View of all the games
+    @GetMapping("/viewGames")
+    public String viewGames(Model m){
+        m.addAttribute("games", this.gameService.getAllGames());
+        return "viewGames";
+    }
+
+    @GetMapping("/viewEvents")
+    public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("events", ga.get().getEvents());
+            m.addAttribute("id", id);
+            return "viewEvents";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("/addEvent")
+    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("id", id);
+            return "addEvent";
+        }
+        return "redirect:/home";
+    }
+    
+    @GetMapping("/startGame")
+    public String startGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+
+            Game game = ga.get();
+            game.setOngoing(true);
+            
+            Event event = new Event("Game started");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/endGame")
+    public String endGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+
+            Game game = ga.get();
+            game.setOngoing(false);
+
+
+            Event event = new Event("Game ended");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/newGoal")
+    public String newGoal(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("g",id);
+            return "addGoal";
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/newYellow")
+    public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("g",id);
+            return "addYellow";
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/newRed")
+    public String newRed(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            m.addAttribute("g",id);
+            return "addRed";
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/interruptGame")
+    public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            Game game = ga.get();
+            game.setInterrupted(true);
+        }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/resumeGame")
+    public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            Game game = ga.get();
+            game.setInterrupted(false);
+        }
+        return "redirect:/home";
+    }
+
+
+    
+
+    //@PostMapping("/sumbitOfficeChange")
+    //public String changeOffice(@ModelAttribute Professor prof) {
+    //    this.profService.changeProfOffice(prof.getId(), prof.getOffice());
+    //    return "redirect:/listProfessors";
+    //}
+    //private String getEditProfessorForm(int id, String formName, Model m) {
+    //    Optional<Professor> op = this.profService.getProfessor(id);
+    //    if (op.isPresent()) {
+    //        m.addAttribute("professor", op.get());
+    //        return formName;
+    //    }
+    //    return "redirect:/listProfessors";
+    //}
+
+    //@GetMapping("/editProfessor")
+    //public String editProfessor(@RequestParam(name="id", required=true) int id, Model m) {
+    //    return getEditProfessorForm(id, "editProfessor", m);
+    //}    
+
+    // For the sake of illustrating the use of @Transactional 
+    //@GetMapping("/changeOffice")
+    //public String getOfficeForm(@RequestParam(name="id", required=true) int id, Model m) {
+    //    return getEditProfessorForm(id, "editProfessorOffice", m);
+    //}
 
     @GetMapping("/users")
     public String users(Model m) {
@@ -205,19 +385,9 @@ public class DataController {
         return "editProfessor";
     }
 
-    private String getEditProfessorForm(int id, String formName, Model m) {
-        Optional<Professor> op = this.profService.getProfessor(id);
-        if (op.isPresent()) {
-            m.addAttribute("professor", op.get());
-            return formName;
-        }
-        return "redirect:/listProfessors";
-    }
+    
 
-    @GetMapping("/editProfessor")
-    public String editProfessor(@RequestParam(name="id", required=true) int id, Model m) {
-        return getEditProfessorForm(id, "editProfessor", m);
-    }    
+    
 
     @PostMapping("/saveProfessor")
     public String saveProfessor(@ModelAttribute Professor prof) {
@@ -225,16 +395,8 @@ public class DataController {
         return "redirect:/listProfessors";
     }
 
-    // For the sake of illustrating the use of @Transactional 
-    @GetMapping("/changeOffice")
-    public String getOfficeForm(@RequestParam(name="id", required=true) int id, Model m) {
-        return getEditProfessorForm(id, "editProfessorOffice", m);
-    }
+    
 
-    @PostMapping("/sumbitOfficeChange")
-    public String changeOffice(@ModelAttribute Professor prof) {
-        this.profService.changeProfOffice(prof.getId(), prof.getOffice());
-        return "redirect:/listProfessors";
-    }*/
+    */
 
 }

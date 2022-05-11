@@ -1,0 +1,15 @@
+<h1>Event to report:</h1>
+
+<div>
+    <ul>
+        <li><a th:href="@{startGame(id=${id})}">Start of the game</a></li>
+        <li><a th:href="@{endGame(id=${id})}">End of the game</a></li>
+        <li><a th:href="@{newGoal(id=${id})}">New Goal</a></li>
+        <li><a th:href="@{newYellow(id=${id})}">Yellow Card</a></li>
+        <li><a th:href="@{newRed(id=${id})}">Red Card</a></li>
+        <li><a th:href="@{interruptGame(id=${id})}">Game interrupted</a></li>
+        <li><a th:href="@{resumeGame(id=${id})}">Game resumed</a></li>
+    </ul>
+    
+</div>
+
