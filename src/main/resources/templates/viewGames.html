@@ -26,7 +26,7 @@
             </td>
             <td th:text="${g.localization}">id</td>
             <td th:text="${#dates.formatISO(g.date)}">id</td>
-            <td><a th:href="@{viewEvents(id=${g.id})}">Game Events</a></td>
+            <td><a th:href="@{viewGames/viewEvents(id=${g.id})}">Game Events</a></td>
             </td>
         </tr>
 

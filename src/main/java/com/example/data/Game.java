@@ -64,6 +64,7 @@ public class Game {
     
     public void addEvent(Event event) {
         this.events.add(event);
+        //System.out.println(events.size());
     }
 
     public void addTeams(Team team) {

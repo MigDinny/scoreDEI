@@ -119,7 +119,7 @@ public class DataController {
         return "viewGames";
     }
 
-    @GetMapping("/viewEvents")
+    @GetMapping("/viewGames/viewEvents")
     public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
@@ -132,17 +132,17 @@ public class DataController {
         return "redirect:/viewGames";
     }
 
-    @GetMapping("/addEvent")
+    @GetMapping("viewGames/addEvent")
     public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
             m.addAttribute("id", id);
             return "addEvent";
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
     
-    @GetMapping("/startGame")
+    @GetMapping("viewGames/addEvent/startGame")
     public String startGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
@@ -151,14 +151,18 @@ public class DataController {
             game.setOngoing(true);
             
             Event event = new Event("Game started");
-            game.addEvent(event);
+           
 
             this.eventService.addEvent(event);
+            game.addEvent(event);
+            System.out.println(game.getEvents().size());
+            Optional<Game> game2 = this.gameService.getGame(game.getId());
+            System.out.println(game2.get().getEvents().size());
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/endGame")
+    @GetMapping("viewGames/addEvent/endGame")
     public String endGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
@@ -171,20 +175,20 @@ public class DataController {
 
             this.eventService.addEvent(event);
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/newGoal")
+    @GetMapping("viewGames/addEvent/newGoal")
     public String newGoal(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
             m.addAttribute("g",id);
             return "addGoal";
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/newYellow")
+    @GetMapping("viewGames/addEvent/newYellow")
     public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
@@ -193,10 +197,10 @@ public class DataController {
             m.addAttribute("players", this.playerService.getAllPlayers());
             return "addYellow";
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/submitYellow")
+    @GetMapping("viewGames/addEvent/submitYellow")
     public String submitYellow(@ModelAttribute EventData event){
 
         if(event.getType() == 1){
@@ -214,49 +218,46 @@ public class DataController {
                 player.setAmountYellows(player.getAmountYellows() +1);
 
                 game.addEvent(newEvent);
-      
-                
-;
             }
             
 
         }
         else if(event.getType() == 2){
-            System.out.println("HERE2");
+
         }
-        System.out.println("HERE3");
-        return "redirect:/home";
+
+        return "redirect:/viewGames";
 
     }
 
-    @GetMapping("/newRed")
+    @GetMapping("viewGames/addEvent/newRed")
     public String newRed(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
             m.addAttribute("g",id);
             return "addRed";
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/interruptGame")
+    @GetMapping("viewGames/addEvent/interruptGame")
     public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
             Game game = ga.get();
             game.setInterrupted(true);
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/resumeGame")
+    @GetMapping("viewGames/addEvent/resumeGame")
     public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
             Game game = ga.get();
             game.setInterrupted(false);
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
     
