@@ -272,15 +272,16 @@ public class DataController {
         return "redirect:/admin/players";
     }
 
-    @GetMapping("admin/matches")
-    public String matches() {
+    @GetMapping("admin/games")
+    public String games(Model m) {
+        m.addAttribute("game", new Game());
         return "matches";
     }
 
-    @PostMapping("/admin/matches/create")
-    public String matchesCreate() {
+    @PostMapping("/admin/games/create")
+    public String gamesCreate() {
         
-        return "redirect:/admin/matches";
+        return "redirect:/admin/games";
     }
 
     @PostMapping("/submitNewEvent")

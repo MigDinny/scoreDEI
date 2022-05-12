@@ -35,9 +35,9 @@
             </div>
             <div>
                 <select id="teams" th:field="*{team}" size="10">
-                    <option th:each="team : ${allTeams}"
-                            th:value="${{team}}"
-                            th:text="${team.name}">
+                    <option th:each="t : ${allTeams}"
+                            th:value="${{t}}"
+                            th:text="${t.name}">
                         The name
                     </option>
                 </select>
