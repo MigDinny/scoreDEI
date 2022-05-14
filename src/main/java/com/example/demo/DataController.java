@@ -8,6 +8,7 @@ import java.util.Date;
 
 //import com.example.data.Player;
 import com.example.data.Team;
+import com.example.data.User;
 import com.example.data.Event;
 import com.example.data.Game;
 import com.example.data.Player;
@@ -88,9 +89,17 @@ public class DataController {
         Game game = new Game("Coimbra");
         game.setDate(new Date());
 
+
         Player player = new Player("Edgar", "striker");
+        Player player2 = new Player("Mijel", "goalkeeper");
+        Player player3 = new Player("Afonso", "striker");
         Team team1 = new Team("sporting");
         Team team2 = new Team("brah");
+        Team team3 = new Team("asd");
+
+        player.setTeam(team1);
+        player2.setTeam(team2);
+        player3.setTeam(team3);
 
         team1.addGame(game);
         team2.addGame(game);
@@ -101,16 +110,18 @@ public class DataController {
         this.gameService.addGame(game);
         this.teamService.addTeam(team1);
         this.teamService.addTeam(team2);
+        this.teamService.addTeam(team3);
         this.playerService.addPlayer((player));
+        this.playerService.addPlayer((player2));    
+        this.playerService.addPlayer((player3));
 
         EventData event_d = new EventData(game.getId(), "Yellow Card",1);
-        System.out.println(event_d.getType());
+
         m.addAttribute("event", event_d);
         m.addAttribute("players", this.playerService.getAllPlayers());
         return "addYellow";
 
     }
-
 
     //View of all the games
     @GetMapping("/viewGames")
@@ -123,8 +134,7 @@ public class DataController {
     public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            System.out.println("yo");
-            System.out.println(ga.get().getEvents().size());
+
             m.addAttribute("events", ga.get().getEvents());
             m.addAttribute("id", id);
             return "viewEvents";
@@ -146,18 +156,20 @@ public class DataController {
     public String startGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            System.out.println("werwefwefwefwef");
+            
+            
             Game game = ga.get();
             game.setOngoing(true);
+            game.setInterrupted(false);
             
             Event event = new Event("Game started");
-           
 
+            event.setGame(game);
             this.eventService.addEvent(event);
             game.addEvent(event);
-            System.out.println(game.getEvents().size());
-            Optional<Game> game2 = this.gameService.getGame(game.getId());
-            System.out.println(game2.get().getEvents().size());
+            this.gameService.addGame(game);
+
+
         }
         return "redirect:/viewGames";
     }
@@ -169,8 +181,39 @@ public class DataController {
 
             Game game = ga.get();
             game.setOngoing(false);
+            game.setInterrupted(true);
 
             Event event = new Event("Game ended");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("viewGames/addEvent/interruptGame")
+    public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            Game game = ga.get();
+            game.setInterrupted(true);
+
+            Event event = new Event("Game interrupted");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("viewGames/addEvent/resumeGame")
+    public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent()){
+            Game game = ga.get();
+            game.setInterrupted(false);
+
+            Event event = new Event("Game resumed");
             game.addEvent(event);
 
             this.eventService.addEvent(event);
@@ -182,85 +225,129 @@ public class DataController {
     public String newGoal(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            m.addAttribute("g",id);
-            return "addGoal";
+            EventData event_d = new EventData(ga.get().getId(), " scored a Goal",3);
+            m.addAttribute("event", event_d);
+
+            Game game = ga.get();
+            List<Player> players = new ArrayList<Player>();
+            List<Team> teams = game.getTeams();
+
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            players.addAll(team1.getPlayers());
+            players.addAll(team2.getPlayers());
+
+            m.addAttribute("players", players);
+
+            return "addYellow";
         }
         return "redirect:/viewGames";
     }
 
     @GetMapping("viewGames/addEvent/newYellow")
     public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
+
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            EventData event_d = new EventData(ga.get().getId(), "Yellow Card",1);
+            EventData event_d = new EventData(ga.get().getId(), " got a Yellow Card",1);
             m.addAttribute("event", event_d);
-            m.addAttribute("players", this.playerService.getAllPlayers());
+
+            Game game = ga.get();
+            List<Player> players = new ArrayList<Player>();
+            List<Team> teams = game.getTeams();
+
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            players.addAll(team1.getPlayers());
+            players.addAll(team2.getPlayers());
+
+            m.addAttribute("players", players);
             return "addYellow";
         }
         return "redirect:/viewGames";
-    }
-
-    @GetMapping("viewGames/addEvent/submitYellow")
-    public String submitYellow(@ModelAttribute EventData event){
-
-        if(event.getType() == 1){
-
-            Event newEvent = new Event(event.getDescription());
- 
-            Optional<Game> ga = this.gameService.getGame(event.getGameId());
-            if(ga.isPresent()){
-
-                Game game = ga.get();
-                newEvent.setGame(game);
-                newEvent.setDate(event.getDate());
-                this.eventService.addEvent(newEvent);
-                Player player = event.getPlayer();
-                player.setAmountYellows(player.getAmountYellows() +1);
-
-                game.addEvent(newEvent);
-            }
-            
-
-        }
-        else if(event.getType() == 2){
-
-        }
-
-        return "redirect:/viewGames";
-
     }
 
     @GetMapping("viewGames/addEvent/newRed")
     public String newRed(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
-            m.addAttribute("g",id);
-            return "addRed";
-        }
-        return "redirect:/viewGames";
-    }
+            
+            EventData event_d = new EventData(ga.get().getId(), " got a Red Card",2);
+            m.addAttribute("event", event_d);
 
-    @GetMapping("viewGames/addEvent/interruptGame")
-    public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
-        Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
             Game game = ga.get();
-            game.setInterrupted(true);
+            List<Player> players = new ArrayList<Player>();
+            List<Team> teams = game.getTeams();
+
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            players.addAll(team1.getPlayers());
+            players.addAll(team2.getPlayers());
+
+            m.addAttribute("players", players);
+            return "addYellow";
         }
         return "redirect:/viewGames";
     }
 
-    @GetMapping("viewGames/addEvent/resumeGame")
-    public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
-        Optional<Game> ga = this.gameService.getGame(id);
+    @GetMapping("viewGames/addEvent/submitEvent")
+    public String submitEvent(@ModelAttribute EventData event){
+
+        String description = "Player " + event.getPlayer().getName() + event.getDescription();
+        
+        Event newEvent = new Event(description);
+
+        Optional<Game> ga = this.gameService.getGame(event.getGameId());
         if(ga.isPresent()){
-            Game game = ga.get();
-            game.setInterrupted(false);
-        }
-        return "redirect:/viewGames";
-    }
 
+            Game game = ga.get();
+            
+            Player player = event.getPlayer();
+
+            //Yellow Card
+            if(event.getType() == 1){
+                player.setAmountYellows(player.getAmountYellows() +1);
+            }
+            //Red Card
+            else if(event.getType() == 2){
+                player.setAmountReds(player.getAmountReds() +1);
+            }
+            //Goal
+            else if(event.getType() == 3){
+
+                player.setAmountGoals(player.getAmountGoals() +1);
+                Team team = player.getTeam();
+                
+                if(team.getId() == game.getTeams().get(0).getId()){
+                    game.setScoreTeam1(game.getScoreTeam1()+1);
+                }
+                else if(team.getId() == game.getTeams().get(1).getId()) {
+                    game.setScoreTeam2(game.getScoreTeam2()+1);
+                }
+                else{
+                    return "redirect:/viewGames";
+                }
     
+            }
+
+            newEvent.setGame(game);
+            newEvent.setDate(event.getDate());
+
+            this.eventService.addEvent(newEvent);
+
+            game.addEvent(newEvent);
+            this.gameService.addGame(game);
+            
+
+        }
+
+        return "redirect:/viewGames";
+
+    }
+
 
     /*
     @GetMapping("/queryStudents")

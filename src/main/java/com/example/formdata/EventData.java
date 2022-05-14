@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class EventData {
     private String description;
     private int gameId;
-    //1-Yellow card/Red card, 2-Goal
+    //1-Yellow card 2-Red card, 3-Goal
     private int type;
     private Player player;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -37,8 +37,8 @@ public class EventData {
         return gameId;
     }
 
-    public void setGame(int gameId){
-        this.gameId = gameId;
+    public void setGameId(int gameid){
+        this.gameId = gameid;
     }
 
     public int getType(){

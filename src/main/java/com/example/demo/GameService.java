@@ -27,7 +27,7 @@ public class GameService {
 
     public void addGame(Game game)  
     {
-        System.out.println(game);
+        //System.out.println(game);
         gameRepository.save(game);    
     }
 

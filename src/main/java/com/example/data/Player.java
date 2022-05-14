@@ -78,4 +78,19 @@ public class Player {
     public void setAmountReds(int amount_reds){
         this.amount_reds = amount_reds;
     }
+
+    /**
+     * @return Team return the team
+     */
+    public Team getTeam() {
+        return team;
+    }
+
+    /**
+     * @param team the team to set
+     */
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
 }

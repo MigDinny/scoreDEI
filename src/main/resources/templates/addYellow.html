@@ -1,11 +1,11 @@
-<form th:action="@{/viewGames/addEvent/submitYellow}" th:object="${event}" method="get">
+<form th:action="@{/viewGames/addEvent/submitEvent}" th:object="${event}" method="get">
 
     <div>
         <label>Description</label>
         <input type="hidden" th:field="*{type}">
         <input type="hidden" th:field="*{description}">
         <input type="hidden" th:field="*{gameId}">
-
+        <p th:text="*{gameId}"></p>
         <label>Player</label>
         <select id="players" th:field="*{player}">
             <option th:each="player : ${players}"

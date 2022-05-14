@@ -16,6 +16,8 @@
             <th>LOCALIZATION</th>
             <th>DATE</th>
             <th>EVENTS</th>
+            <th>CURRENT STATE</th>
+            <th>STATE</th>
         </tr>
         <tr th:each="g: ${games}">
             <td>
@@ -27,6 +29,8 @@
             <td th:text="${g.localization}">id</td>
             <td th:text="${#dates.formatISO(g.date)}">id</td>
             <td><a th:href="@{viewGames/viewEvents(id=${g.id})}">Game Events</a></td>
+            <td th:text= "${g.interrupted}  ? 'Interrupted' : 'Playing'">Female</span></td>
+            <td th:text= "${g.ongoing} ? 'Ongoing' : 'Ended'"></td>
             </td>
         </tr>
 

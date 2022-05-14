@@ -41,7 +41,7 @@ public class Game {
         this.scoreTeam2 = 0;
         this.localization = localization;
         this.interrupted = false;
-        this.ongoing = false;
+        this.ongoing = true;
         this.teams = new ArrayList<>();
         this.events = new ArrayList<>();
     }
@@ -64,7 +64,7 @@ public class Game {
     
     public void addEvent(Event event) {
         this.events.add(event);
-        //System.out.println(events.size());
+        System.out.println(events.size());
     }
 
     public void addTeams(Team team) {
