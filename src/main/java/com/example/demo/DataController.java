@@ -184,9 +184,32 @@ public class DataController {
             game.setInterrupted(true);
 
             Event event = new Event("Game ended");
+            event.setGame(game);
             game.addEvent(event);
 
             this.eventService.addEvent(event);
+
+            List<Team> teams = game.getTeams();
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            int score1 = game.getScoreTeam1();
+            int score2 = game.getScoreTeam2();
+
+            if(score1 > score2){
+                team1.setWins(team1.getWins()+1);
+                team2.setLosses(team2.getLosses()+1);
+            }
+            else if(score2 > score1){
+                team1.setLosses(team1.getLosses()+1);
+                team2.setWins(team2.getWins()+1);
+            }
+            else{
+                team1.setDraw(team1.getDraw()+1);
+                team2.setDraw(team2.getDraw()+1);
+            }
+            this.teamService.addTeam(team1);
+            this.teamService.addTeam(team2);
         }
         return "redirect:/viewGames";
     }
@@ -340,6 +363,7 @@ public class DataController {
 
             game.addEvent(newEvent);
             this.gameService.addGame(game);
+            this.playerService.addPlayer(player);
             
 
         }
@@ -348,7 +372,15 @@ public class DataController {
 
     }
 
-
+    @GetMapping("/statistics")
+    public String statistics(Model m){
+        m.addAttribute("wins", this.teamService.winsListOrdered());
+        m.addAttribute("losses", this.teamService.lossesListOrdered());
+        m.addAttribute("draws", this.teamService.drawListOrdered());
+        m.addAttribute("best", this.playerService.findBestScorer());
+        m.addAttribute("numberGames", this.teamService.numberGamesList());
+        return "stats";
+    }
     /*
     @GetMapping("/queryStudents")
     public String queryStudent1(Model m) {

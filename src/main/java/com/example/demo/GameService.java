@@ -34,6 +34,7 @@ public class GameService {
     public Optional<Game> getGame(int id) {
         return gameRepository.findById(id);
     }
+    
 
     /*
     @Transactional
