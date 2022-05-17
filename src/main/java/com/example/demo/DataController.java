@@ -145,7 +145,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent")
     public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             m.addAttribute("id", id);
             return "addEvent";
         }
@@ -155,7 +155,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent/startGame")
     public String startGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             
             
             Game game = ga.get();
@@ -177,7 +177,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent/endGame")
     public String endGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() ){
 
             Game game = ga.get();
             game.setOngoing(false);
@@ -217,7 +217,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent/interruptGame")
     public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             Game game = ga.get();
             game.setInterrupted(true);
 
@@ -232,7 +232,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent/resumeGame")
     public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             Game game = ga.get();
             game.setInterrupted(false);
 
@@ -247,7 +247,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent/newGoal")
     public String newGoal(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             EventData event_d = new EventData(ga.get().getId(), " scored a Goal",3);
             m.addAttribute("event", event_d);
 
@@ -272,7 +272,7 @@ public class DataController {
     public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
 
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             EventData event_d = new EventData(ga.get().getId(), " got a Yellow Card",1);
             m.addAttribute("event", event_d);
 
@@ -295,7 +295,7 @@ public class DataController {
     @GetMapping("viewGames/addEvent/newRed")
     public String newRed(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
             
             EventData event_d = new EventData(ga.get().getId(), " got a Red Card",2);
             m.addAttribute("event", event_d);
@@ -324,7 +324,7 @@ public class DataController {
         Event newEvent = new Event(description);
 
         Optional<Game> ga = this.gameService.getGame(event.getGameId());
-        if(ga.isPresent()){
+        if(ga.isPresent() && ga.get().getOngoing()){
 
             Game game = ga.get();
             
@@ -381,6 +381,7 @@ public class DataController {
         m.addAttribute("numberGames", this.teamService.numberGamesList());
         return "stats";
     }
+    
     /*
     @GetMapping("/queryStudents")
     public String queryStudent1(Model m) {

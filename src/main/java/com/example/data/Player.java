@@ -93,4 +93,8 @@ public class Player {
         this.team = team;
     }
 
+    public String getTeamName(){
+        return team.getName();
+    }
+
 }

@@ -12,10 +12,12 @@
 
     <table border = "2">
         <tr>
+            <th>TEAM</th>
             <th>BEST SCORER/S</th>
             <th>GOALS</th>
         </tr>
         <tr th:each="p: ${best}">
+            <td th:text="${p.getTeamName()}"></td>
             <td th:text="${p.name}"></td>
             <td th:text="${p.amountGoals}"></td>
         </tr>
