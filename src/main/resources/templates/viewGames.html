@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Games</title>
+</head>
+<body>
+    <a th:href="@{home}">home</a>
+    <h1>LIST OF GAMES:</h1>
+
+    <table border = "2">
+        <tr>
+            <th>GAME</th>
+            <th>SCORE</th>
+            <th>LOCALIZATION</th>
+            <th>DATE</th>
+            <th>EVENTS</th>
+            <th>CURRENT STATE</th>
+            <th>STATE</th>
+        </tr>
+        <tr th:each="g: ${games}">
+            <td>
+                <span th:text="${g.teams[0].name}">team1</span>-<span th:text="${g.teams[1].name}">team2</span>
+            </td>
+            <td>
+                <span th:text="${g.scoreTeam1}">scoreTeam1</span>-<span th:text="${g.scoreTeam2}">team2</span>
+            </td>
+            <td th:text="${g.localization}">id</td>
+            <td th:text="${#dates.formatISO(g.date)}">id</td>
+            <td><a th:href="@{viewGames/viewEvents(id=${g.id})}">Game Events</a></td>
+            <td th:text= "${g.interrupted}  ? 'Interrupted' : 'Playing'">Female</span></td>
+            <td th:text= "${g.ongoing} ? 'Ongoing' : 'Ended'"></td>
+            </td>
+        </tr>
+
+    </table>
+
+    
+</body>
+</html>

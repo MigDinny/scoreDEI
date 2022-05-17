@@ -1,6 +1,6 @@
 package com.example.data;
 
-import java.util.List;
+
 
 import javax.persistence.*;
 
@@ -12,7 +12,7 @@ public class Player {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name, position;
-    private int amount_goals, amount_yellows, amount_reds;
+    private int amountGoals, amount_yellows, amount_reds;
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
     @ManyToOne
     private Team team;
@@ -22,7 +22,7 @@ public class Player {
     public Player(String name, String position) {
         this.name = name;
         this.position = position;
-        this.amount_goals = 0;
+        this.amountGoals = 0;
         this.amount_yellows = 0;
         this.amount_reds = 0;
     }
@@ -56,11 +56,11 @@ public class Player {
     }
 
     public int getAmountGoals(){
-        return amount_goals;
+        return amountGoals;
     }
 
     public void setAmountGoals(int amoung_goals){
-        this.amount_goals = amoung_goals;
+        this.amountGoals = amoung_goals;
     }
 
     public int getAmountYellows(){
@@ -78,4 +78,23 @@ public class Player {
     public void setAmountReds(int amount_reds){
         this.amount_reds = amount_reds;
     }
+
+    /**
+     * @return Team return the team
+     */
+    public Team getTeam() {
+        return team;
+    }
+
+    /**
+     * @param team the team to set
+     */
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public String getTeamName(){
+        return team.getName();
+    }
+
 }
