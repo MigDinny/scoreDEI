@@ -36,7 +36,7 @@
             <div>
                 <select id="teams" th:field="*{team}" size="10">
                     <option th:each="t : ${allTeams}"
-                            th:value="${{t}}"
+                            th:value="${{t.id}}"
                             th:text="${t.name}">
                         The name
                     </option>
@@ -49,9 +49,11 @@
     <table border="2">
         <tr>
             <th>Nome</th>
+            <th>Equipa</th>
         </tr>
         <tr th:each="p : ${allPlayers}">
             <td th:text="${p.name}"></td>
+            <td th:text="${p.getTeamName()}"></td>
         </tr>
     </table>
 </body>
