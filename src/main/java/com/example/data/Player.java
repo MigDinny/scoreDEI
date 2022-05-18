@@ -25,6 +25,8 @@ public class Player {
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
     @ManyToOne(cascade = CascadeType.ALL)
     private Team team;
+
+    //private int teamID;
     
     public Player() {}
 

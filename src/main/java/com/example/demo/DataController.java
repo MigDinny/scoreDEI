@@ -267,6 +267,7 @@ public class DataController {
 
     @PostMapping("/admin/players/create")
     public String playersCreate(@ModelAttribute("player") Player player) {
+        //player.setTeam(this.teamService.getTeam(player.getTeamID()));
         this.playerService.addPlayer(player);
 
         return "redirect:/admin/players";
@@ -275,7 +276,7 @@ public class DataController {
     @GetMapping("admin/games")
     public String games(Model m) {
         m.addAttribute("game", new Game());
-        return "matches";
+        return "games";
     }
 
     @PostMapping("/admin/games/create")
