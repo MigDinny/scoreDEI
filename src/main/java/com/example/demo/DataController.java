@@ -467,7 +467,7 @@ public class DataController {
     }*/
 
     //View of all the games
-    @GetMapping("/viewGames")
+    /*@GetMapping("/viewGames")
     public String viewGames(Model m){
         m.addAttribute("games", this.gameService.getAllGames());
         return "currentGames";
@@ -497,7 +497,7 @@ public class DataController {
     public String newEvent(@ModelAttribute Event event) {
         this.eventService.addEvent(event);
         return "redirect:/home";
-    }
+    }*/
 
 
     //@PostMapping("/sumbitOfficeChange")
