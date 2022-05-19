@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "userTable")
+@Table(name = "users")
 public class User {
     @Id
     @Column (name = "id")
@@ -18,7 +18,6 @@ public class User {
 
     private String phoneNumber;
     private String email;
-    private boolean is_admin;
 
     @OneToMany(mappedBy="user")
     private List<Event> events;
@@ -34,12 +33,12 @@ public class User {
     public User() {
     }
 
-    public User(String name, String password, String phoneNumber, String email, boolean is_admin) {
+    public User(String name, String password, String phoneNumber, String email) {
         this.name = name;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.is_admin = is_admin;
+        this.enabled = true;
     }
     
     /**
@@ -112,19 +111,6 @@ public class User {
         this.email = email;
     }
 
-    /**
-     * @return boolean return the is_admin
-     */
-    public boolean isIs_admin() {
-        return is_admin;
-    }
-
-    /**
-     * @param is_admin the is_admin to set
-     */
-    public void setIs_admin(boolean is_admin) {
-        this.is_admin = is_admin;
-    }
 
     /**
      * @return List<Event> return the events

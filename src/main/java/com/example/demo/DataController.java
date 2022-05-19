@@ -12,6 +12,7 @@ import com.example.data.User;
 import com.example.data.Event;
 import com.example.data.Game;
 import com.example.data.Player;
+import com.example.data.Role;
 import com.example.formdata.FormData;
 import com.example.formdata.EventData;
 
@@ -42,11 +43,22 @@ public class DataController {
 
     @Autowired
     EventService eventService;
-    
 
+    @Autowired
+    RoleService roleService;
     
     @GetMapping("/")
     public String redirect() {
+        if(roleService.getAllRoles().size() < 2){
+            Role role1 = new Role("USER");
+            Role role2 = new Role("ADMIN");
+            roleService.addRole(role1);
+            roleService.addRole(role2);
+
+            User user = new User("Edgar", "kekek", "919", "a@gmail.com");
+            User user2 = new User("Edgar2", "kekek", "919", "a@gmail.com");
+        }
+        
         return "redirect:/home";
     }
 
@@ -387,12 +399,6 @@ public class DataController {
     @GetMapping("/login")
     public String login(Model m){
         return "login";
-    }
-
-    @PostMapping("/login/auth")
-    public String authLogin(){
-
-        return "redirect:/home";
     }
     
     @GetMapping("/logout")
