@@ -3,18 +3,16 @@ package com.example.data;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Game {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int idTeam1;
-    private int idTeam2;
     private int scoreTeam1;
     private int scoreTeam2;
     private int idWinner;
@@ -22,21 +20,30 @@ public class Game {
     private String localization;
     private boolean interrupted;
     private boolean is_draw;
-    //FALTA O CAMPO DA IMAGEM (BLOB)
+    private boolean ongoing;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date date;
+    
+
 
     @OneToMany(mappedBy="game")
     private List<Event> events;
 
+    @ManyToMany(mappedBy="games")
+    private List<Team> teams;
+
     public Game() {
     }
 
-    public Game(int idTeam1, int idTeam2, String localization) {
-        this.idTeam1 = idTeam1;
-        this.idTeam2 = idTeam2;
+    public Game(String localization) {
+
         this.scoreTeam1 = 0;
         this.scoreTeam2 = 0;
         this.localization = localization;
         this.interrupted = false;
+        this.ongoing = true;
+        this.teams = new ArrayList<>();
+        this.events = new ArrayList<>();
     }
 
     public int getId() {
@@ -54,26 +61,27 @@ public class Game {
     public void setEvents(List<Event> events) {
         this.events = events;
     }
-
+    
     public void addEvent(Event event) {
         this.events.add(event);
+        System.out.println(events.size());
     }
 
-    public int getIdTeam1() {
-        return idTeam1;
+    public void addTeams(Team team) {
+        this.teams.add(team);
     }
 
-    public void setIdTeam1(int idTeam1){
-        this.idTeam1 = idTeam1;
+    public List<Team> getTeams() {
+        return teams;
     }
 
-    public int getIdTeam2(){
-        return idTeam2;
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 
-    public void setIdTeam2(int idTeam2){
-        this.idTeam2 = idTeam2;
-    }
+   
+
+
 
     public String getLocalization(){
         return localization;
@@ -165,6 +173,22 @@ public class Game {
      */
     public void setIs_draw(boolean is_draw) {
         this.is_draw = is_draw;
+    }
+
+    public void setDate(Date date){
+        this.date = date;
+    }
+
+    public Date getDate(){
+        return date;
+    }
+
+    public void setOngoing(boolean ongoing){
+        this.ongoing = ongoing;
+    }
+    
+    public boolean getOngoing(){
+        return ongoing;
     }
 
 }

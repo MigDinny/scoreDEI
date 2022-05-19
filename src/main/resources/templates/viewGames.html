@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 015e08a19a2f65f4e6aa99219d58fc5457939f3d
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +11,27 @@
     <title>List of Games</title>
 </head>
 <body>
+<<<<<<< HEAD
+=======
+    <a th:href="@{home}">home</a>
+>>>>>>> 015e08a19a2f65f4e6aa99219d58fc5457939f3d
     <h1>LIST OF GAMES:</h1>
 
     <table border = "2">
         <tr>
             <th>GAME</th>
             <th>SCORE</th>
+<<<<<<< HEAD
             <th>LOCATION</th>
             <th>DATE</th>
             <th>EVENTS</th>
+=======
+            <th>LOCALIZATION</th>
+            <th>DATE</th>
+            <th>EVENTS</th>
+            <th>CURRENT STATE</th>
+            <th>STATE</th>
+>>>>>>> 015e08a19a2f65f4e6aa99219d58fc5457939f3d
         </tr>
         <tr th:each="g: ${games}">
             <td>
@@ -26,8 +41,15 @@
                 <span th:text="${g.scoreTeam1}">scoreTeam1</span>-<span th:text="${g.scoreTeam2}">team2</span>
             </td>
             <td th:text="${g.localization}">id</td>
+<<<<<<< HEAD
             <td th:data="${g.data}">id</td>
             <td><a th:href="@{viewEvents(id=${g.id})}">Game Events</a></td>
+=======
+            <td th:text="${#dates.formatISO(g.date)}">id</td>
+            <td><a th:href="@{viewGames/viewEvents(id=${g.id})}">Game Events</a></td>
+            <td th:text= "${g.interrupted}  ? 'Interrupted' : 'Playing'">Female</span></td>
+            <td th:text= "${g.ongoing} ? 'Ongoing' : 'Ended'"></td>
+>>>>>>> 015e08a19a2f65f4e6aa99219d58fc5457939f3d
             </td>
         </tr>
 
