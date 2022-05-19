@@ -43,6 +43,8 @@ public class DataController {
     @Autowired
     EventService eventService;
     
+
+    
     @GetMapping("/")
     public String redirect() {
         return "redirect:/home";
@@ -382,6 +384,22 @@ public class DataController {
         return "stats";
     }
     
+    @GetMapping("/login")
+    public String login(Model m){
+        return "login";
+    }
+
+    @PostMapping("/login/auth")
+    public String authLogin(){
+
+        return "redirect:/home";
+    }
+    
+    @GetMapping("/logout")
+    public String logout(Model m){
+        return "logout";
+    }
+
     /*
     @GetMapping("/queryStudents")
     public String queryStudent1(Model m) {
