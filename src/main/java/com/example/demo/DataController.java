@@ -275,13 +275,18 @@ public class DataController {
 
     @GetMapping("admin/games")
     public String games(Model m) {
+        m.addAttribute("allTeams", this.teamService.getAllTeams());
         m.addAttribute("game", new Game());
         return "games";
     }
 
     @PostMapping("/admin/games/create")
-    public String gamesCreate() {
+    public String gamesCreate(@ModelAttribute("game") Game game) {
         
+        game.getTeams().get(0).addGame(game);
+        game.getTeams().get(1).addGame(game);
+        
+        this.gameService.addGame(game);
         return "redirect:/admin/games";
     }
 

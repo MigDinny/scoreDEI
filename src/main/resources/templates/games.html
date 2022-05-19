@@ -11,7 +11,7 @@
         <div="form-row">
             <div>
                 <label>Localizaçao</label>
-                <input type="text" th:field="*{location}">
+                <input type="text" th:field="*{localization}">
             </div>
             <div>
                 <label>Data</label>
@@ -19,12 +19,25 @@
             </div>
             <div>
                 <label>Equipa A</label>
-                
+                <select id="teams" th:field="*{teams}" size="10">
+                    <option th:each="t : ${allTeams}"
+                            th:value="${{t.id}}"
+                            th:text="${t.name}">
+                        The name
+                    </option>
+                </select>
             </div>
             <div>
                 <label>Equipa B</label>
+                <select id="teams" th:field="*{teams}" size="10">
+                    <option th:each="t : ${allTeams}"
+                            th:value="${{t.id}}"
+                            th:text="${t.name}">
+                        The name
+                    </option>
+                </select>
             </div>
-            <button type="submit">Create Player</button>
+            <button type="submit">Create Game</button>
         </div>
     </form>
 

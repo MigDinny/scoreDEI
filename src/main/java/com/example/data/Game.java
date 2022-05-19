@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Blob;
-import javax.sql.rowset.serial.SerialBlob;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Game {
@@ -21,6 +21,7 @@ public class Game {
     private boolean interrupted;
     private boolean is_draw;
     private boolean ongoing;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
     private Blob blob;
     //FALTA O CAMPO DA IMAGEM (BLOB)
