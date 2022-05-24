@@ -25,4 +25,8 @@ public class RoleService {
         roleRepository.findAll().forEach(userRecords::add);    
         return userRecords; 
     }
+
+    public List<Role> getRoleByName(String roleName){
+        return roleRepository.getRoleByName(roleName);
+    }
 }

@@ -4,14 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>scoreDEI - Home</title>
 </head>
 <body>
+
+
+    <h1>Welcome to CodeJava.net <div sec:authorize="isAuthenticated()"> <span sec:authentication="name">Username</span> &nbsp; </div> </h1> 
+    
+    <h3><a th:href="@{/users2}">List of Users</a></h3>
+    <h3><a th:href="@{/register}">Register</a></h3>
+    <h3><a th:href="@{/login}">Login</a></h3>
+
+
     <p>Admin: <a href="/users">Utilizadores</a> <a href="/teams">Equipas</a> <a href="/players">Jogadores</a> <a href="/matches">Jogos de Futebol</a></p>
-    <p>HELLO WORLD</p>
+
     <a th:href="@{home/test}">test stuff</a>
     <a th:href="@{viewGames}">View Games</a>
     <a th:href="@{statistics}">Statistics</a>
+
+    
 </body>
 </html>

@@ -18,6 +18,7 @@ import com.example.formdata.EventData;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,9 +55,6 @@ public class DataController {
             Role role2 = new Role("ADMIN");
             roleService.addRole(role1);
             roleService.addRole(role2);
-
-            User user = new User("Edgar", "kekek", "919", "a@gmail.com");
-            User user2 = new User("Edgar2", "kekek", "919", "a@gmail.com");
         }
         
         return "redirect:/home";
@@ -65,6 +63,34 @@ public class DataController {
     @GetMapping("/home")
     public String home() {
         return "home";
+    }
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+     
+        return "signup_form";
+    }
+
+
+    @PostMapping("/process_register")
+    public String processRegister(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setEnabled(true);
+        user.addRole(roleService.getRoleByName("ADMIN").get(0));
+        userService.addUser(user);
+     
+        return "register_success";
+    }
+
+    @GetMapping("/users2")
+    public String listUsers(Model model) {
+        List<User> listUsers = userService.getAllUsers();
+        model.addAttribute("listUsers", listUsers);
+        
+        return "users2";
     }
     
     //PARA TESTES APAGAR NO FINAL
@@ -398,7 +424,7 @@ public class DataController {
     
     @GetMapping("/login")
     public String login(Model m){
-        return "login";
+        return "home";
     }
     
     @GetMapping("/logout")
