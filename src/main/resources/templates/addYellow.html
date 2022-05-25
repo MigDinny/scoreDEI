@@ -1,5 +1,6 @@
+<a th:href="@{/home}">home</a>
 <form th:action="@{/viewGames/addEvent/submitEvent}" th:object="${event}" method="post">
-
+    
     <div>
         <label>Description</label>
         <input type="hidden" th:field="*{type}">
