@@ -14,6 +14,7 @@ import com.example.data.User;
 import com.example.data.Event;
 import com.example.data.Game;
 import com.example.data.Player;
+import com.example.data.Role;
 import com.example.formdata.FormData;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.example.core.ExternalREST;
@@ -22,6 +23,7 @@ import com.example.formdata.EventData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,8 +51,20 @@ public class DataController {
     @Autowired
     EventService eventService;
 
+
+    @Autowired
+    RoleService roleService;
+    
+
     @GetMapping("/")
     public String redirect() {
+        if(roleService.getAllRoles().size() < 2){
+            Role role1 = new Role("USER");
+            Role role2 = new Role("ADMIN");
+            roleService.addRole(role1);
+            roleService.addRole(role2);
+        }
+        
         return "redirect:/home";
     }
 
@@ -58,6 +72,29 @@ public class DataController {
     public String home() {
         return "home";
     }
+
+
+    /*@GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+     
+        return "signup_form";
+    }*/
+
+
+    /*@PostMapping("/process_register")
+    public String processRegister(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setEnabled(true);
+        user.addRole(roleService.getRoleByName("ADMIN").get(0));
+        userService.addUser(user);
+     
+        return "register_success";
+    }*/
+
+
 
     // View of all the games
     @GetMapping("/viewGames")
@@ -324,9 +361,28 @@ public class DataController {
         return "stats";
     }
     
+
+    @GetMapping("/login")
+    public String login(Model m){
+        return "home";
+    }
+    
+    @GetMapping("/logout")
+    public String logout(Model m){
+        return "logout";
+    }
+
+    /*
+    @GetMapping("/queryStudents")
+    public String queryStudent1(Model m) {
+        m.addAttribute("person", new FormData());
+        return "queryStudents";
+    }
+
     @GetMapping("/admin/fill")
     public String fill(Model m) {
         // call REST API and save data on database
+
 
         ExternalREST er = new ExternalREST();
         int team_local_ids[] = new int[4];
