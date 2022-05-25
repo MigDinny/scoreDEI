@@ -41,7 +41,7 @@ public class Game {
         this.scoreTeam2 = 0;
         this.localization = localization;
         this.interrupted = false;
-        this.ongoing = true;
+        this.ongoing = false;
         this.teams = new ArrayList<>();
         this.events = new ArrayList<>();
     }

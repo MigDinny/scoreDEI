@@ -1,11 +1,11 @@
-<form th:action="@{/viewGames/addEvent/submitEvent}" th:object="${event}" method="get">
+<form th:action="@{/viewGames/addEvent/submitEvent}" th:object="${event}" method="post">
 
     <div>
         <label>Description</label>
         <input type="hidden" th:field="*{type}">
         <input type="hidden" th:field="*{description}">
         <input type="hidden" th:field="*{gameId}">
-        <p th:text="*{gameId}"></p>
+        <p th:text="*{description}"></p>
         <label>Player</label>
         <select id="players" th:field="*{player}">
             <option th:each="player : ${players}"
@@ -14,8 +14,8 @@
             </option>
         </select>
 
-        <label>Date</label>
-        <input type="date" th:field="*{date}">
+        <label>Time</label>
+        <input type="datetime-local" th:field="*{date}">
 
     </div>
     <button type="submit">Submit</button>

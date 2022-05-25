@@ -11,10 +11,11 @@
     <table border="2">
         <tr>
             <th>Event</th>
+            <th>Date Time</th>
         </tr>
         <tr th:each="e : ${events}">
             <td th:text ="${e.description}"></td>
-            
+            <td th:text = "${#dates.formatISO(e.date)}"></td>
         </tr>
     </table>
 </body>

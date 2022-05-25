@@ -13,7 +13,7 @@ public class Event {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String description;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
 
     @ManyToOne
