@@ -23,8 +23,8 @@ public class Game {
     private boolean ongoing;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
-    private Blob blob;
-    //FALTA O CAMPO DA IMAGEM (BLOB)
+    
+
 
     @OneToMany(mappedBy="game")
     private List<Event> events;
@@ -35,13 +35,13 @@ public class Game {
     public Game() {
     }
 
-    public Game(int idTeam1, int idTeam2, String localization) {
+    public Game(String localization) {
 
         this.scoreTeam1 = 0;
         this.scoreTeam2 = 0;
         this.localization = localization;
         this.interrupted = false;
-        this.ongoing = false;
+        this.ongoing = true;
         this.teams = new ArrayList<>();
         this.events = new ArrayList<>();
     }
@@ -64,6 +64,7 @@ public class Game {
     
     public void addEvent(Event event) {
         this.events.add(event);
+        System.out.println(events.size());
     }
 
     public void addTeams(Team team) {
@@ -180,14 +181,6 @@ public class Game {
 
     public Date getDate(){
         return date;
-    }
-
-    public void setBlob(Blob blob){
-        this.blob = blob;
-    }
-
-    public Blob getBlob(){
-        return blob;
     }
 
     public void setOngoing(boolean ongoing){

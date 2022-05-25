@@ -41,6 +41,10 @@ public class PlayerService
             p.get().setPosition(newposition);
     }
 
+    public List<Player> findBestScorer(){
+        return playerRepository.findBestScorer();
+    }
+
     //FALTAM FUNCOES COMO É OBVIO
 
 }    

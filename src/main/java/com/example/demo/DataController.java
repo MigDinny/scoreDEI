@@ -10,12 +10,14 @@ import java.util.Date;
 //import com.example.data.Player;
 import com.example.data.User;
 import com.example.data.Team;
+import com.example.data.User;
 import com.example.data.Event;
 import com.example.data.Game;
 import com.example.data.Player;
 import com.example.formdata.FormData;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.example.core.ExternalREST;
+import com.example.formdata.EventData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -101,10 +103,11 @@ public class DataController {
         return "viewGames";
     }
 
-    @GetMapping("/viewEvents")
-    public String viewEvents(@RequestParam(name = "id", required = true) int id, Model m) {
+    @GetMapping("/viewGames/viewEvents")
+    public String viewEvents(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
+        if(ga.isPresent()){
+
             m.addAttribute("events", ga.get().getEvents());
             m.addAttribute("id", id);
             return "viewEvents";
@@ -112,111 +115,273 @@ public class DataController {
         return "redirect:/viewGames";
     }
 
-    @GetMapping("/addEvent")
-    public String addEvent(@RequestParam(name = "id", required = true) int id, Model m) {
+    @GetMapping("viewGames/addEvent")
+    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
+        if(ga.isPresent() && ga.get().getOngoing()){
             m.addAttribute("id", id);
             return "addEvent";
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
-
-    @GetMapping("/startGame")
-    public String startGame(@RequestParam(name = "id", required = true) int id, Model m) {
+    
+    @GetMapping("viewGames/addEvent/startGame")
+    public String startGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
-
+        if(ga.isPresent() && ga.get().getOngoing()){
+            
+            
             Game game = ga.get();
             game.setOngoing(true);
-
+            game.setInterrupted(false);
+            
             Event event = new Event("Game started");
-            game.addEvent(event);
 
+            event.setGame(game);
             this.eventService.addEvent(event);
+            game.addEvent(event);
+            this.gameService.addGame(game);
+
+
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/endGame")
-    public String endGame(@RequestParam(name = "id", required = true) int id, Model m) {
+    @GetMapping("viewGames/addEvent/endGame")
+    public String endGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
+        if(ga.isPresent() ){
 
             Game game = ga.get();
             game.setOngoing(false);
+            game.setInterrupted(true);
 
             Event event = new Event("Game ended");
+            event.setGame(game);
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
+
+            List<Team> teams = game.getTeams();
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            int score1 = game.getScoreTeam1();
+            int score2 = game.getScoreTeam2();
+
+            if(score1 > score2){
+                team1.setWins(team1.getWins()+1);
+                team2.setLosses(team2.getLosses()+1);
+            }
+            else if(score2 > score1){
+                team1.setLosses(team1.getLosses()+1);
+                team2.setWins(team2.getWins()+1);
+            }
+            else{
+                team1.setDraw(team1.getDraw()+1);
+                team2.setDraw(team2.getDraw()+1);
+            }
+            this.teamService.addTeam(team1);
+            this.teamService.addTeam(team2);
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("viewGames/addEvent/interruptGame")
+    public String interruptGame(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent() && ga.get().getOngoing()){
+            Game game = ga.get();
+            game.setInterrupted(true);
+
+            Event event = new Event("Game interrupted");
             game.addEvent(event);
 
             this.eventService.addEvent(event);
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    @GetMapping("/newGoal")
-    public String newGoal(@RequestParam(name = "id", required = true) int id, Model m) {
+    @GetMapping("viewGames/addEvent/resumeGame")
+    public String resumeGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
-            m.addAttribute("g", id);
-            return "addGoal";
-        }
-        return "redirect:/home";
-    }
-
-    @GetMapping("/newYellow")
-    public String newYellow(@RequestParam(name = "id", required = true) int id, Model m) {
-        Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
-            m.addAttribute("g", id);
-            return "addYellow";
-        }
-        return "redirect:/home";
-    }
-
-    @GetMapping("/newRed")
-    public String newRed(@RequestParam(name = "id", required = true) int id, Model m) {
-        Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
-            m.addAttribute("g", id);
-            return "addRed";
-        }
-        return "redirect:/home";
-    }
-
-    @GetMapping("/interruptGame")
-    public String interruptGame(@RequestParam(name = "id", required = true) int id, Model m) {
-        Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
-            Game game = ga.get();
-            game.setInterrupted(true);
-        }
-        return "redirect:/home";
-    }
-
-    @GetMapping("/resumeGame")
-    public String resumeGame(@RequestParam(name = "id", required = true) int id, Model m) {
-        Optional<Game> ga = this.gameService.getGame(id);
-        if (ga.isPresent()) {
+        if(ga.isPresent() && ga.get().getOngoing()){
             Game game = ga.get();
             game.setInterrupted(false);
+
+            Event event = new Event("Game resumed");
+            game.addEvent(event);
+
+            this.eventService.addEvent(event);
         }
-        return "redirect:/home";
+        return "redirect:/viewGames";
     }
 
-    // @PostMapping("/sumbitOfficeChange")
-    // public String changeOffice(@ModelAttribute Professor prof) {
-    // this.profService.changeProfOffice(prof.getId(), prof.getOffice());
-    // return "redirect:/listProfessors";
-    // }
-    // private String getEditProfessorForm(int id, String formName, Model m) {
-    // Optional<Professor> op = this.profService.getProfessor(id);
-    // if (op.isPresent()) {
-    // m.addAttribute("professor", op.get());
-    // return formName;
-    // }
-    // return "redirect:/listProfessors";
-    // }
+    @GetMapping("viewGames/addEvent/newGoal")
+    public String newGoal(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent() && ga.get().getOngoing()){
+            EventData event_d = new EventData(ga.get().getId(), " scored a Goal",3);
+            m.addAttribute("event", event_d);
+
+            Game game = ga.get();
+            List<Player> players = new ArrayList<Player>();
+            List<Team> teams = game.getTeams();
+
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            players.addAll(team1.getPlayers());
+            players.addAll(team2.getPlayers());
+
+            m.addAttribute("players", players);
+
+            return "addYellow";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("viewGames/addEvent/newYellow")
+    public String newYellow(@RequestParam(name="id", required = true) int id, Model m){
+
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent() && ga.get().getOngoing()){
+            EventData event_d = new EventData(ga.get().getId(), " got a Yellow Card",1);
+            m.addAttribute("event", event_d);
+
+            Game game = ga.get();
+            List<Player> players = new ArrayList<Player>();
+            List<Team> teams = game.getTeams();
+
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            players.addAll(team1.getPlayers());
+            players.addAll(team2.getPlayers());
+
+            m.addAttribute("players", players);
+            return "addYellow";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("viewGames/addEvent/newRed")
+    public String newRed(@RequestParam(name="id", required = true) int id, Model m){
+        Optional<Game> ga = this.gameService.getGame(id);
+        if(ga.isPresent() && ga.get().getOngoing()){
+            
+            EventData event_d = new EventData(ga.get().getId(), " got a Red Card",2);
+            m.addAttribute("event", event_d);
+
+            Game game = ga.get();
+            List<Player> players = new ArrayList<Player>();
+            List<Team> teams = game.getTeams();
+
+            Team team1 = teams.get(0);
+            Team team2 = teams.get(1);
+
+            players.addAll(team1.getPlayers());
+            players.addAll(team2.getPlayers());
+
+            m.addAttribute("players", players);
+            return "addYellow";
+        }
+        return "redirect:/viewGames";
+    }
+
+    @GetMapping("viewGames/addEvent/submitEvent")
+    public String submitEvent(@ModelAttribute EventData event){
+
+        String description = "Player " + event.getPlayer().getName() + event.getDescription();
+        
+        Event newEvent = new Event(description);
+
+        Optional<Game> ga = this.gameService.getGame(event.getGameId());
+        if(ga.isPresent() && ga.get().getOngoing()){
+
+            Game game = ga.get();
+            
+            Player player = event.getPlayer();
+
+            //Yellow Card
+            if(event.getType() == 1){
+                player.setAmountYellows(player.getAmountYellows() +1);
+            }
+            //Red Card
+            else if(event.getType() == 2){
+                player.setAmountReds(player.getAmountReds() +1);
+            }
+            //Goal
+            else if(event.getType() == 3){
+
+                player.setAmountGoals(player.getAmountGoals() +1);
+                Team team = player.getTeam();
+                
+                if(team.getId() == game.getTeams().get(0).getId()){
+                    game.setScoreTeam1(game.getScoreTeam1()+1);
+                }
+                else if(team.getId() == game.getTeams().get(1).getId()) {
+                    game.setScoreTeam2(game.getScoreTeam2()+1);
+                }
+                else{
+                    return "redirect:/viewGames";
+                }
+    
+            }
+
+            newEvent.setGame(game);
+            newEvent.setDate(event.getDate());
+
+            this.eventService.addEvent(newEvent);
+
+            game.addEvent(newEvent);
+            this.gameService.addGame(game);
+            this.playerService.addPlayer(player);
+            
+
+        }
+
+        return "redirect:/viewGames";
+
+    }
+
+    @GetMapping("/statistics")
+    public String statistics(Model m){
+        m.addAttribute("wins", this.teamService.winsListOrdered());
+        m.addAttribute("losses", this.teamService.lossesListOrdered());
+        m.addAttribute("draws", this.teamService.drawListOrdered());
+        m.addAttribute("best", this.playerService.findBestScorer());
+        m.addAttribute("numberGames", this.teamService.numberGamesList());
+        return "stats";
+    }
+    
+    /*
+    @GetMapping("/queryStudents")
+    public String queryStudent1(Model m) {
+        m.addAttribute("person", new FormData());
+        return "queryStudents";
+    }
+
+    // Note the invocation of a service method that is served by a query in jpql 
+
+    @GetMapping("/queryResults")
+    public String queryResult1(@ModelAttribute FormData data, Model m) {
+        List<Team> ls = this.studentService.findByNameEndsWith(data.getName());
+        m.addAttribute("students", ls);
+        return "listStudents";
+    }
+
+    @GetMapping("/listProfessors")
+    public String listProfs(Model model) {
+        model.addAttribute("professors", this.profService.getAllProfessors());
+        return "listProfessors";
+    }
+
+    @GetMapping("/createProfessor")
+    public String createProfessor(Model m) {
+        m.addAttribute("professor", new Professor());
+        return "editProfessor";
+    }
 
     // @GetMapping("/editProfessor")
     // public String editProfessor(@RequestParam(name="id", required=true) int id,
@@ -224,12 +389,28 @@ public class DataController {
     // return getEditProfessorForm(id, "editProfessor", m);
     // }
 
-    // For the sake of illustrating the use of @Transactional
-    // @GetMapping("/changeOffice")
-    // public String getOfficeForm(@RequestParam(name="id", required=true) int id,
-    // Model m) {
-    // return getEditProfessorForm(id, "editProfessorOffice", m);
-    // }
+    
+
+    @PostMapping("/saveProfessor")
+    public String saveProfessor(@ModelAttribute Professor prof) {
+        this.profService.addProfessor(prof);
+        return "redirect:/listProfessors";
+    }
+    
+    */
+    //@PostMapping("/sumbitOfficeChange")
+    //public String changeOffice(@ModelAttribute Professor prof) {
+    //    this.profService.changeProfOffice(prof.getId(), prof.getOffice());
+    //    return "redirect:/listProfessors";
+    //}
+    //private String getEditProfessorForm(int id, String formName, Model m) {
+    //    Optional<Professor> op = this.profService.getProfessor(id);
+    //    if (op.isPresent()) {
+    //        m.addAttribute("professor", op.get());
+    //        return formName;
+    //    }
+    //    return "redirect:/listProfessors";
+    //}
 
     @GetMapping("/admin/fill")
     public String fill(Model m) {
@@ -373,119 +554,5 @@ public class DataController {
         this.eventService.addEvent(event);
         return "redirect:/home";
     }
-
-    // TUDO VAI SER REESCRITO
-    /*
-     * @GetMapping("/createData")
-     * public String createData() {
-     * return "createData";
-     * }
-     * 
-     * @PostMapping("/saveData")
-     * public String saveData(Model model) {
-     * Professor[] myprofs = {
-     * new Professor("José", "D3.1"),
-     * new Professor("Paulo", "135"),
-     * new Professor("Estrela", "180")
-     * };
-     * Team[] mystudents = {
-     * new Team("Paula", "91999991", 21),
-     * new Team("Artur", "91999992", 21),
-     * new Team("Rui", "91999993", 19),
-     * new Team("Luísa", "91999994", 20),
-     * new Team("Alexandra", "91999995", 21),
-     * new Team("Carlos", "91999995", 22)
-     * };
-     * 
-     * mystudents[0].addProf(myprofs[0]);
-     * mystudents[0].addProf(myprofs[1]);
-     * mystudents[1].addProf(myprofs[1]);
-     * mystudents[1].addProf(myprofs[2]);
-     * mystudents[2].addProf(myprofs[0]);
-     * mystudents[3].addProf(myprofs[2]);
-     * mystudents[4].addProf(myprofs[1]);
-     * mystudents[5].addProf(myprofs[0]);
-     * mystudents[5].addProf(myprofs[1]);
-     * mystudents[5].addProf(myprofs[2]);
-     * 
-     * for (Team s : mystudents)
-     * this.studentService.addStudent(s);
-     * 
-     * return "redirect:/listStudents";
-     * }
-     * 
-     * @GetMapping("/listStudents")
-     * public String listStudents(Model model) {
-     * model.addAttribute("students", this.studentService.getAllStudents());
-     * return "listStudents";
-     * }
-     * 
-     * @GetMapping("/createStudent")
-     * public String createStudent(Model m) {
-     * m.addAttribute("student", new Team());
-     * m.addAttribute("allProfessors", this.profService.getAllProfessors());
-     * return "editStudent";
-     * }
-     * 
-     * @GetMapping("/editStudent")
-     * public String editStudent(@RequestParam(name="id", required=true) int id,
-     * Model m) {
-     * Optional<Team> op = this.studentService.getStudent(id);
-     * if (op.isPresent()) {
-     * m.addAttribute("student", op.get());
-     * m.addAttribute("allProfessors", this.profService.getAllProfessors());
-     * return "editStudent";
-     * }
-     * else {
-     * return "redirect:/listStudents";
-     * }
-     * }
-     * 
-     * @PostMapping("/saveStudent")
-     * public String saveStudent(@ModelAttribute Team st) {
-     * this.studentService.addStudent(st);
-     * return "redirect:/listStudents";
-     * }
-     * 
-     * @GetMapping("/queryStudents")
-     * public String queryStudent1(Model m) {
-     * m.addAttribute("person", new FormData());
-     * return "queryStudents";
-     * }
-     * 
-     * // Note the invocation of a service method that is served by a query in jpql
-     * 
-     * @GetMapping("/queryResults")
-     * public String queryResult1(@ModelAttribute FormData data, Model m) {
-     * List<Team> ls = this.studentService.findByNameEndsWith(data.getName());
-     * m.addAttribute("students", ls);
-     * return "listStudents";
-     * }
-     * 
-     * @GetMapping("/listProfessors")
-     * public String listProfs(Model model) {
-     * model.addAttribute("professors", this.profService.getAllProfessors());
-     * return "listProfessors";
-     * }
-     * 
-     * @GetMapping("/createProfessor")
-     * public String createProfessor(Model m) {
-     * m.addAttribute("professor", new Professor());
-     * return "editProfessor";
-     * }
-     * 
-     * 
-     * 
-     * 
-     * 
-     * @PostMapping("/saveProfessor")
-     * public String saveProfessor(@ModelAttribute Professor prof) {
-     * this.profService.addProfessor(prof);
-     * return "redirect:/listProfessors";
-     * }
-     * 
-     * 
-     * 
-     */
 
 }

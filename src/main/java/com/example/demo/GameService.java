@@ -27,13 +27,14 @@ public class GameService {
 
     public void addGame(Game game)  
     {
-        System.out.println(game);
+        //System.out.println(game);
         gameRepository.save(game);    
     }
 
     public Optional<Game> getGame(int id) {
         return gameRepository.findById(id);
     }
+    
 
     /*
     @Transactional

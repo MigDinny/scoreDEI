@@ -5,12 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Event {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String description;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date date;
 
     @ManyToOne
     private Game game;
@@ -73,6 +77,21 @@ public class Event {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+
+    /**
+     * @return Date return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
     }
 
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics</title>
+</head>
+<body>
+    <a th:href="@{home}">home</a>
+    <h1>BEST SCORER/S:</h1>
+
+    <table border = "2">
+        <tr>
+            <th>TEAM</th>
+            <th>BEST SCORER/S</th>
+            <th>GOALS</th>
+        </tr>
+        <tr th:each="p: ${best}">
+            <td th:text="${p.getTeamName()}"></td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.amountGoals}"></td>
+        </tr>
+
+    </table>
+    
+    <h1>PLAYED GAMES</h1>
+
+    <table border = "2">
+        <tr>
+            <th>TEAM</th>
+            <th>NUMBER GAMES</th>
+        </tr>
+        <tr th:each="t: ${numberGames}">
+            <td th:text="${t.name}"></td>
+            <td th:text="${t.wins + t.draw + t.losses}"></td>
+        </tr>
+
+    </table>
+
+    <h1>WINS</h1>
+
+    <table border = "2">
+        <tr>
+            <th>TEAM</th>
+            <th>NUMBER WINS</th>
+        </tr>
+        <tr th:each="t: ${wins}">
+            <td th:text="${t.name}"></td>
+            <td th:text="${t.wins}"></td>
+        </tr>
+
+    </table>
+
+    <h1>DRAWS</h1>
+
+    <table border = "2">
+        <tr>
+            <th>TEAM</th>
+            <th>NUMBER DRAWS</th>
+        </tr>
+        <tr th:each="t: ${draws}">
+            <td th:text="${t.name}"></td>
+            <td th:text="${t.draw}"></td>
+        </tr>
+
+    </table>
+
+    <h1>LOSSES</h1>
+
+    <table border = "2">
+        <tr>
+            <th>TEAM</th>
+            <th>NUMBER LOSSES</th>
+        </tr>
+        <tr th:each="t: ${losses}">
+            <td th:text="${t.name}"></td>
+            <td th:text="${t.losses}"></td>
+        </tr>
+
+    </table>
+    
+</body>
+</html>

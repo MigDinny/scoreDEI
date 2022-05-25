@@ -25,7 +25,6 @@ public class EventService {
 
     public void addEvent(Event event)  
     {
-        System.out.println(event);
         eventRepository.save(event);    
     }
 
@@ -33,5 +32,5 @@ public class EventService {
         return eventRepository.findById(id);
     }
 
-     //FALTAM FUNCOES COMO É OBVIO
+
 }
