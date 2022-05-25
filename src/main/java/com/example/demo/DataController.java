@@ -99,7 +99,7 @@ public class DataController {
             game.setInterrupted(false);
             
             Event event = new Event("Game started");
-
+            event.setDate(new Date());
             event.setGame(game);
             this.eventService.addEvent(event);
             game.addEvent(event);
@@ -120,6 +120,7 @@ public class DataController {
             game.setInterrupted(true);
 
             Event event = new Event("Game ended");
+            event.setDate(new Date());
             event.setGame(game);
             game.addEvent(event);
 
@@ -159,6 +160,8 @@ public class DataController {
             game.setInterrupted(true);
 
             Event event = new Event("Game interrupted");
+            event.setDate(new Date());
+            event.setGame(game);
             game.addEvent(event);
 
             this.eventService.addEvent(event);
@@ -174,6 +177,8 @@ public class DataController {
             game.setInterrupted(false);
 
             Event event = new Event("Game resumed");
+            event.setDate(new Date());
+            event.setGame(game);
             game.addEvent(event);
 
             this.eventService.addEvent(event);
