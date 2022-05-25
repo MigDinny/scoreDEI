@@ -19,6 +19,8 @@ public class User {
     private String phoneNumber;
     private String email;
 
+    private boolean admin;
+
     @OneToMany(mappedBy="user")
     private List<Event> events;
 
@@ -33,12 +35,16 @@ public class User {
     public User() {
     }
 
-    public User(String name, String password, String phoneNumber, String email) {
+
+
+    public User(String name, String password, String phoneNumber, String email, boolean admin) {
         this.name = name;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.enabled = true;
+
+        this.admin = admin;
     }
     
     /**
@@ -109,6 +115,14 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 

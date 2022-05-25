@@ -2,29 +2,41 @@ package com.example.data;
 
 
 
+import java.util.Date;
+
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 
 @Entity
 @Table(name = "playerTable")
 public class Player {
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String name, position;
-    private int amountGoals, amount_yellows, amount_reds;
+    private int amountGoals, amountYellows, amountReds;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthdate;
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Team team;
 
+    //private int teamID;
+    
     public Player() {}
+
 
     public Player(String name, String position) {
         this.name = name;
         this.position = position;
         this.amountGoals = 0;
-        this.amount_yellows = 0;
-        this.amount_reds = 0;
+        this.amountYellows = 0;
+        this.amountReds = 0;
     }
 
     public int getId() {
@@ -64,37 +76,38 @@ public class Player {
     }
 
     public int getAmountYellows(){
-        return amount_yellows;
+        return amountYellows;
     }
 
     public void setAmountYellows(int amount_yellows){
-        this.amount_yellows = amount_yellows;
+        this.amountYellows = amount_yellows;
     }
 
     public int getAmountReds(){
-        return amount_reds;
+        return amountReds;
     }
 
     public void setAmountReds(int amount_reds){
-        this.amount_reds = amount_reds;
+        this.amountReds = amount_reds;
+    }
+    
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    /**
-     * @return Team return the team
-     */
-    public Team getTeam() {
-        return team;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
-    /**
-     * @param team the team to set
-     */
     public void setTeam(Team team) {
         this.team = team;
     }
 
-    public String getTeamName(){
-        return team.getName();
+    public Team getTeam() {
+        return this.team;
     }
 
+    public String getTeamName() {
+        return this.team.getName();
+    }
 }

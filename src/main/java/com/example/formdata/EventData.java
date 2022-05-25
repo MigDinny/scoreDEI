@@ -11,7 +11,7 @@ public class EventData {
     //1-Yellow card 2-Red card, 3-Goal
     private int type;
     private Player player;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
 
 
