@@ -18,7 +18,7 @@ public class Player {
     private int id;
 
     private String name, position;
-    private int amount_goals, amount_yellows, amount_reds;
+    private int amountGoals, amountYellows, amountReds;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
@@ -34,9 +34,9 @@ public class Player {
     public Player(String name, String position) {
         this.name = name;
         this.position = position;
-        this.amount_goals = 0;
-        this.amount_yellows = 0;
-        this.amount_reds = 0;
+        this.amountGoals = 0;
+        this.amountYellows = 0;
+        this.amountReds = 0;
     }
 
     public int getId() {
@@ -68,27 +68,27 @@ public class Player {
     }
 
     public int getAmountGoals(){
-        return amount_goals;
+        return amountGoals;
     }
 
     public void setAmountGoals(int amoung_goals){
-        this.amount_goals = amoung_goals;
+        this.amountGoals = amoung_goals;
     }
 
     public int getAmountYellows(){
-        return amount_yellows;
+        return amountYellows;
     }
 
     public void setAmountYellows(int amount_yellows){
-        this.amount_yellows = amount_yellows;
+        this.amountYellows = amount_yellows;
     }
 
     public int getAmountReds(){
-        return amount_reds;
+        return amountReds;
     }
 
     public void setAmountReds(int amount_reds){
-        this.amount_reds = amount_reds;
+        this.amountReds = amount_reds;
     }
     
     public Date getBirthdate() {
