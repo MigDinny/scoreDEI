@@ -115,9 +115,10 @@ public class DataController {
         return "redirect:/viewGames";
     }
 
-    @GetMapping("viewGames/addEvent")
-    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
+    @GetMapping("/viewGames/addEvend")
+    public String addEvend(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
+        System.out.println("HEREEEEE");
         if(ga.isPresent()){
             m.addAttribute("id", id);
             return "addEvent";
@@ -125,7 +126,7 @@ public class DataController {
         return "redirect:/viewGames";
     }
     
-    @GetMapping("viewGames/addEvent/startGame")
+    @GetMapping("/viewGames/addEvent/startGame")
     public String startGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
@@ -147,7 +148,7 @@ public class DataController {
         return "redirect:/viewGames";
     }
 
-    @GetMapping("viewGames/addEvent/endGame")
+    @GetMapping("/viewGames/addEvent/endGame")
     public String endGame(@RequestParam(name="id", required = true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent() && ga.get().getOngoing()){
@@ -372,12 +373,6 @@ public class DataController {
         return "logout";
     }
 
-    /*
-    @GetMapping("/queryStudents")
-    public String queryStudent1(Model m) {
-        m.addAttribute("person", new FormData());
-        return "queryStudents";
-    }
 
     @GetMapping("/admin/fill")
     public String fill(Model m) {
@@ -466,9 +461,20 @@ public class DataController {
 
     @PostMapping("/admin/users/signup")
     public String usersSignup(@ModelAttribute("user") User user) {
-        this.userService.addUser(user);
 
-        return "redirect:/admin/users";
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        user.setEnabled(true);
+        
+        this.userService.addUser(user);
+        if(user.isAdmin()){
+            user.addRole(roleService.getRoleByName("ADMIN").get(0));
+        }
+        user.addRole(roleService.getRoleByName("USER").get(0));
+
+        return "redirect:/login";
     }
 
     @GetMapping("/admin/teams")

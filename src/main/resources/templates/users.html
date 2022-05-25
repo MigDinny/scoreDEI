@@ -8,7 +8,7 @@
 </head>
 <body>
     <a th:href="@{/home}">home</a>
-    <form th:action="@{/users/signup}" th:object="${user}" method="post">
+    <form th:action="@{users/signup}" th:object="${user}" method="post">
         <div="form-row">
             <input type="text" th:field="*{name}" placeholder="Name" />
             <input type="email" th:field="*{email}" placeholder="email@domain.com"/>
