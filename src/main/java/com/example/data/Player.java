@@ -34,7 +34,7 @@ public class Player {
     public Player(String name, String position) {
         this.name = name;
         this.position = position;
-        this.amountGoals = 0;
+        this.amount_goals = 0;
         this.amount_yellows = 0;
         this.amount_reds = 0;
     }
