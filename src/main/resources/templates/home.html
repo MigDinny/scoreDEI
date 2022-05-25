@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>scoreDEI - Home</title>
-</head>
-<body>
-    <p>Admin: <a href="/users">Utilizadores</a> <a href="/teams">Equipas</a> <a href="/players">Jogadores</a> <a href="/matches">Jogos de Futebol</a></p>
-    <p>HELLO WORLD</p>
-    <a th:href="@{home/test}">test stuff</a>
-    <a th:href="@{viewGames}">View Games</a>
-    <a th:href="@{statistics}">Statistics</a>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>scoreDEI - Home</title>
+    </head>
+
+    <body>
+        <p>Admin: <a href="/admin/users">Utilizadores</a> <a href="/admin/teams">Equipas</a> <a href="/admin/players">Jogadores</a> <a href="/admin/games">Jogos de Futebol</a></p>
+        <a th:href="@{home/test}">test stuff</a>
+        <a th:href="@{viewGames}">View Games</a>
+        <a th:href="@{statistics}">Statistics</a>
+    </body>
+
 </html>

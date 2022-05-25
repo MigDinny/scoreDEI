@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.sql.Blob;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -21,7 +21,7 @@ public class Game {
     private boolean interrupted;
     private boolean is_draw;
     private boolean ongoing;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
     
 

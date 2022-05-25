@@ -2,22 +2,34 @@ package com.example.data;
 
 
 
+import java.util.Date;
+
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 
 @Entity
 @Table(name = "playerTable")
 public class Player {
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String name, position;
-    private int amountGoals, amount_yellows, amount_reds;
+    private int amount_goals, amount_yellows, amount_reds;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthdate;
     //private TimeStamp date_game; Nao encontro o import e nao tou com paciencia para o encontrar xD
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Team team;
 
+    //private int teamID;
+    
     public Player() {}
+
 
     public Player(String name, String position) {
         this.name = name;
@@ -56,11 +68,11 @@ public class Player {
     }
 
     public int getAmountGoals(){
-        return amountGoals;
+        return amount_goals;
     }
 
     public void setAmountGoals(int amoung_goals){
-        this.amountGoals = amoung_goals;
+        this.amount_goals = amoung_goals;
     }
 
     public int getAmountYellows(){
@@ -78,23 +90,24 @@ public class Player {
     public void setAmountReds(int amount_reds){
         this.amount_reds = amount_reds;
     }
-
-    /**
-     * @return Team return the team
-     */
-    public Team getTeam() {
-        return team;
+    
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    /**
-     * @param team the team to set
-     */
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
     public void setTeam(Team team) {
         this.team = team;
     }
 
-    public String getTeamName(){
-        return team.getName();
+    public Team getTeam() {
+        return this.team;
     }
 
+    public String getTeamName() {
+        return this.team.getName();
+    }
 }

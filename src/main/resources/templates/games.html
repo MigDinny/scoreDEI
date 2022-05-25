@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scoreDEI - Matches</title>
+</head>
+<body>
+    <form th:action="@{/admin/games/create}" th:object="${game}" method="post">
+        <div="form-row">
+            <div>
+                <label>Localizaçao</label>
+                <input type="text" th:field="*{localization}">
+            </div>
+            <div>
+                <label>Data</label>
+                <input type="datetime-local" th:field="*{date}">
+            </div>
+            <div>
+                <label>Equipa A</label>
+                <select id="teams" th:field="*{teams}" size="10">
+                    <option th:each="t : ${allTeams}"
+                            th:value="${{t.id}}"
+                            th:text="${t.name}">
+                        The name
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label>Equipa B</label>
+                <select id="teams" th:field="*{teams}" size="10">
+                    <option th:each="t : ${allTeams}"
+                            th:value="${{t.id}}"
+                            th:text="${t.name}">
+                        The name
+                    </option>
+                </select>
+            </div>
+            <button type="submit">Create Game</button>
+        </div>
+    </form>
+
+</body>
+</html>

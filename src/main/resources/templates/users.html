@@ -4,18 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>scoreDEI - Home</title>
+    <title>scoreDEI - Users</title>
 </head>
 <body>
+    <form th:action="@{/users/signup}" th:object="${user}" method="post">
+        <div="form-row">
+            <input type="text" th:field="*{name}" placeholder="Name" />
+            <input type="email" th:field="*{email}" placeholder="email@domain.com"/>
+            <input type="text" th:field="*{phoneNumber}" placeholder="Phone Number" />
+            <input type="password" th:field="*{password}" placeholder="Password" />
+            <input type="checkbox" th:field="*{admin}" /> Admin Rights
+            <button type="submit">Registar Utilizador</button>
+        </div>
+    </form>
+
     <table border="2">
         <tr>
             <th>Username</th>
+            <th>Email</th>
+            <th>Phone Number</th>
             <th>Is Admin</th>
         </tr>
-        <tr th:each="u : ${users}">
-            <td th:text ="${u.name}"></td>
-            <td th:if="${u.is_admin == true}">Admin</td>
-            <td th:unless="${u.is_admin == true}">Regular</td>
+        <tr th:each="u : ${us}">
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.phoneNumber}"></td>
+            <td th:if="${u.admin == true}">Admin</td>
+            <td th:unless="${u.admin == true}">Regular</td>
         </tr>
     </table>
 </body>

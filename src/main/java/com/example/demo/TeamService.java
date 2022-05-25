@@ -22,9 +22,9 @@ public class TeamService
         return userRecords;    
     }
 
-    public void addTeam(Team team)  
+    public Team addTeam(Team team)  
     {    
-        teamRepository.save(team);    
+        return teamRepository.save(team);   
     }
 
     public Optional<Team> getTeam(int id) {

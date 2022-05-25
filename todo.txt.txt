@@ -1,0 +1,15 @@
+ir buscar 4 equipas
+
+para cada equipa fazer request pra ir buscar TODOS os jogadores de cada equipa
+
+https://api-sports.io/documentation/football/v3#tag/Players/operation/get-players
+https://api-sports.io/documentation/football/v3#tag/Teams/operation/get-teams
+
+
+JSON parse
+
+save on DB iteratively
+
+
+
+https://www.google.com/search?q=native+json+parse+java&rlz=1C1FCXM_pt-PTPT972PT972&oq=native+json+parse+java&aqs=chrome..69i57j0i512l9.2074j0j7&sourceid=chrome&ie=UTF-8
