@@ -11,11 +11,16 @@
 
     <body>
       <h1>Welcome <div sec:authorize="isAuthenticated()"> <span sec:authentication="name">Username</span> &nbsp; </div> </h1> 
-        <h3><a th:href="@{/users2}">List of Users</a></h3>
-        <h3><a th:href="@{/register}">Register</a></h3>
-        <h3><a th:href="@{/login}">Login</a></h3>
+      <div sec:authorize="isAuthenticated()">
+         <a th:href="@{/logout}" >Logout</a>
+        </div>
+
+        <p><a th:href="@{/login}">Login</a></p>
+        <p><a href="/admin/users">Sign up</a></p>
+        <div sec:authorize="hasAnyAuthority('ADMIN')">
+            <p>Admin: <a href="/admin/users">Users</a> <a href="/admin/teams">Equipas</a> <a href="/admin/players">Jogadores</a> <a href="/admin/games">Jogos de Futebol</a></p>
+        </div>
         
-        <p>Admin: <a href="/admin/users">Utilizadores</a> <a href="/admin/teams">Equipas</a> <a href="/admin/players">Jogadores</a> <a href="/admin/games">Jogos de Futebol</a></p>
         <a th:href="@{viewGames}">View Games</a>
         <a th:href="@{statistics}">Statistics</a>
     </body>

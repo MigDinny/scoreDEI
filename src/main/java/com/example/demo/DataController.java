@@ -115,8 +115,8 @@ public class DataController {
         return "redirect:/viewGames";
     }
 
-    @GetMapping("/viewGames/addEvend")
-    public String addEvend(@RequestParam(name="id", required=true) int id, Model m){
+    @GetMapping("/viewGames/addEvent")
+    public String addEvent(@RequestParam(name="id", required=true) int id, Model m){
         Optional<Game> ga = this.gameService.getGame(id);
         System.out.println("HEREEEEE");
         if(ga.isPresent()){
@@ -468,11 +468,15 @@ public class DataController {
 
         user.setEnabled(true);
         
-        this.userService.addUser(user);
+        
         if(user.isAdmin()){
-            user.addRole(roleService.getRoleByName("ADMIN").get(0));
+            Role role = roleService.getRoleByName("ADMIN").get(0);
+            System.out.println(role);
+            user.addRole(role);
         }
         user.addRole(roleService.getRoleByName("USER").get(0));
+
+        this.userService.addUser(user);
 
         return "redirect:/login";
     }

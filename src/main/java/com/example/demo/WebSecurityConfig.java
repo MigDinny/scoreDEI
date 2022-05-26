@@ -45,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/viewGames").permitAll()
             .antMatchers("/viewGames/viewEvents").permitAll()
             .antMatchers("/viewGames/**").hasAnyAuthority("USER", "ADMIN")
+            .antMatchers("/admin/users/**").permitAll()
+            .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
             .antMatchers("/users2").authenticated()
             .antMatchers("/stats/**").permitAll()
             .anyRequest().permitAll()

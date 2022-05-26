@@ -19,6 +19,7 @@
         </div>
     </form>
 
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
     <table border="2">
         <tr>
             <th>Username</th>
@@ -34,5 +35,6 @@
             <td th:unless="${u.admin == true}">Regular</td>
         </tr>
     </table>
+    </div>
 </body>
 </html>
