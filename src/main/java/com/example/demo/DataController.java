@@ -51,7 +51,6 @@ public class DataController {
     @Autowired
     EventService eventService;
 
-
     @Autowired
     RoleService roleService;
     
@@ -473,8 +472,8 @@ public class DataController {
             Role role = roleService.getRoleByName("ADMIN").get(0);
             System.out.println(role);
             user.addRole(role);
-        }
-        user.addRole(roleService.getRoleByName("USER").get(0));
+        } else
+            user.addRole(roleService.getRoleByName("USER").get(0));
 
         this.userService.addUser(user);
 
