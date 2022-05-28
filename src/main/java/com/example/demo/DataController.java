@@ -416,7 +416,7 @@ public class DataController {
         m.addAttribute("team", new Team());
         return "teams";
     }
-
+ 
     @PostMapping("/admin/teams/create")
     public String teamsCreate(@ModelAttribute("team") Team team) {
         this.teamService.addTeam(team);

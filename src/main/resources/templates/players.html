@@ -20,17 +20,17 @@
             </div>
             <div>
                 <select id="positions" th:field="*{position}">
-                    <option th:value="defesa">
-                        Defesa
+                    <option th:value="Defender">
+                        Defender
                     </option>
-                    <option th:value="medio">
-                        Médio
+                    <option th:value="Midfielder">
+                        Midfielder
                     </option>
-                    <option th:value="avancado">
-                        Avançado
+                    <option th:value="Attacker">
+                        Attacker
                     </option>
-                    <option th:value="guardaredes">
-                        Guarda Redes
+                    <option th:value="Goalkeeper">
+                        Goalkeeper
                     </option>
                 </select>
             </div>
@@ -51,10 +51,12 @@
         <tr>
             <th>Nome</th>
             <th>Equipa</th>
+            <th>Posição</th>
         </tr>
         <tr th:each="p : ${allPlayers}">
             <td th:text="${p.name}"></td>
             <td th:text="${p.getTeamName()}"></td>
+            <td th:text="${p.getPosition()}"></td>
         </tr>
     </table>
 </body>
