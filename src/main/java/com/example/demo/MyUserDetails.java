@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.data.User;
 import com.example.data.Role;
 
+//Codigo retirado de https://www.codejava.net/frameworks/spring-boot/spring-boot-security-role-based-authorization-tutorial
 public class MyUserDetails implements UserDetails{
     private User user;
 

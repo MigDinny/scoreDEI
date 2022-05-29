@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  
+//Adaptado de https://www.codejava.net/frameworks/spring-boot/spring-boot-security-role-based-authorization-tutorial
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

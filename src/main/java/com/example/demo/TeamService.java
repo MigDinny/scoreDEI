@@ -47,9 +47,5 @@ public class TeamService
         return teamRepository.numberGames();
     }
 
-    /*
-    public List<Team> findByNameEndsWith(String chars) {
-        return teamRepository.findByNameEndsWith(chars);
-    }*/
 
 }    

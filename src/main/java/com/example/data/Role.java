@@ -2,6 +2,7 @@ package com.example.data;
 
 import javax.persistence.*;
 
+//Retirado de https://www.codejava.net/frameworks/spring-boot/spring-boot-security-role-based-authorization-tutorial
 @Entity
 @Table(name = "roles")
 public class Role {

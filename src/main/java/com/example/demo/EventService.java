@@ -32,5 +32,9 @@ public class EventService {
         return eventRepository.findById(id);
     }
 
+    public List<Event> eventsOrdered(int id){
+        return eventRepository.eventsOrdered(id);
+    }
+
 
 }

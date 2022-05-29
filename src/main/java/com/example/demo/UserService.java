@@ -33,5 +33,13 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-     //FALTAM FUNCOES COMO É OBVIO
+    public boolean checkUserByName(String userName){
+        Optional<User> user =userRepository.getUserByUsername(userName);
+
+        if(user.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -45,6 +45,5 @@ public class PlayerService
         return playerRepository.findBestScorer();
     }
 
-    //FALTAM FUNCOES COMO É OBVIO
 
 }    

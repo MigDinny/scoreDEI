@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.sql.Blob;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity

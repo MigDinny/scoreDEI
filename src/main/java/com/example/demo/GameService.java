@@ -3,7 +3,6 @@ package com.example.demo;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
 
 import java.util.ArrayList;    
 import org.springframework.beans.factory.annotation.Autowired;    
@@ -35,22 +34,5 @@ public class GameService {
         return gameRepository.findById(id);
     }
     
-
-    /*
-    @Transactional
-    public void changeOngoing(int id, boolean newState){
-        Optional<Game> g = gameRepository.findById(id);
-        if(g.isPresent()){
-            
-        }
-    }
-
-    @Transactional
-    public void change(int id, boolean newState){
-        Optional<Game> g = gameRepository.findById(id);
-        if(g.isPresent()){
-            g.get().setInterrupted(newState);
-        }
-    }*/
 
 }

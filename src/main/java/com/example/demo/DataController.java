@@ -10,12 +10,10 @@ import java.util.Date;
 //import com.example.data.Player;
 import com.example.data.User;
 import com.example.data.Team;
-import com.example.data.User;
 import com.example.data.Event;
 import com.example.data.Game;
 import com.example.data.Player;
 import com.example.data.Role;
-import com.example.formdata.FormData;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.example.core.ExternalREST;
 import com.example.formdata.EventData;
@@ -26,13 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class DataController {
@@ -50,6 +45,7 @@ public class DataController {
 
     @Autowired
     EventService eventService;
+
 
     @Autowired
     RoleService roleService;
@@ -73,28 +69,6 @@ public class DataController {
     }
 
 
-    /*@GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-     
-        return "signup_form";
-    }*/
-
-
-    /*@PostMapping("/process_register")
-    public String processRegister(User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setEnabled(true);
-        user.addRole(roleService.getRoleByName("ADMIN").get(0));
-        userService.addUser(user);
-     
-        return "register_success";
-    }*/
-
-
-
     // View of all the games
     @GetMapping("/viewGames")
     public String viewGames(Model m) {
@@ -107,7 +81,7 @@ public class DataController {
         Optional<Game> ga = this.gameService.getGame(id);
         if(ga.isPresent()){
 
-            m.addAttribute("events", ga.get().getEvents());
+            m.addAttribute("events", eventService.eventsOrdered(id));
             m.addAttribute("id", id);
             return "viewEvents";
         }
@@ -463,6 +437,11 @@ public class DataController {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
+
+        if(userService.checkUserByName(user.getName())){
+            return "redirect:/admin/users";
+        }
+
         user.setPassword(encodedPassword);
 
         user.setEnabled(true);
@@ -486,7 +465,7 @@ public class DataController {
         m.addAttribute("team", new Team());
         return "teams";
     }
- 
+
     @PostMapping("/admin/teams/create")
     public String teamsCreate(@ModelAttribute("team") Team team) {
         this.teamService.addTeam(team);

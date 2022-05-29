@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 import java.sql.Blob;
-import javax.sql.rowset.serial.SerialBlob;
 
 @Entity
 @Table(name = "teamTable")
